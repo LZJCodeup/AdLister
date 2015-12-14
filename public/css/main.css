@@ -1,0 +1,15 @@
+nav {
+  background: #779D49;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black; }
+  nav a {
+    color: black; }
+
+main {
+  color: #4F5C31; }
+  main h1 {
+    margin: 50px 0; }
+  main h3 {
+    margin: 50px 0; }
+
+/*# sourceMappingURL=main.css.map */

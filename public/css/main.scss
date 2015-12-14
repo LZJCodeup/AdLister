@@ -1,0 +1,26 @@
+// dark green #4F5C31
+// light green #779D49
+$darkGreen = #4F5C31;
+$lightGreen = #779D49;
+
+nav{
+    background: #779D49;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+
+    a{
+        color: black;
+    }
+}
+
+main{
+    color: #4F5C31;
+
+    h1{
+        margin: 50px 0;
+    }
+
+    h3{
+        margin: 50px 0;
+    }
+}
