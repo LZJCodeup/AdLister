@@ -23,17 +23,20 @@
             <h2>Most Recent Ads</h2>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    ad content...
+                    <img src="http://placehold.it/350x300" class="img-responsive">
+                    <p>ad content...</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    ad content...
+                    <img src="http://placehold.it/350x300" class="img-responsive">
+                    <p>ad content...</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    ad content...
+                    <img src="http://placehold.it/350x300" class="img-responsive">
+                    <p>ad content...</p>
                 </div>
             </div>
         </div>
