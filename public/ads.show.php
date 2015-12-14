@@ -13,8 +13,18 @@
     <?php include '../views/partials/header.php'; ?>
     <?php include '../views/partials/navbar.php'; ?>
 
-    <!-- content goes here... -->
-    
+    <div class="container">
+        <h1>All Ads</h1>
+        <div class="form-inline pull-right">
+            <select class="form-control" name="sort" id="">
+                <option value="" selected disabled>Sort By...</option>
+                <option value="">Most Recent</option>
+                <option value="">Price</option>
+                <option value="">Popularity</option>
+            </select>
+        </div>
+    </div>
+
     <?php include '../views/partials/footer.php'; ?>
 </body>
 </html>
