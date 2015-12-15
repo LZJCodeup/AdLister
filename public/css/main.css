@@ -18,4 +18,14 @@ main {
 select {
   margin-bottom: 20px; }
 
-/*# sourceMappingURL=main.css.map */
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-center {
+    width:125px;
+    margin-left:auto;
+    margin-right:auto;
+}
