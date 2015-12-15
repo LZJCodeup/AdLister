@@ -26,13 +26,27 @@
 </head>
 <body>
 	<div class="container">
-      <ul class="list-group">
-            <li class="list-group-item text-left"><strong>Profile</strong></li>
-            <li class="list-group-item text-right"><span class="pull-left">First name</span> Joseph</li>
-            <li class="list-group-item text-right"><span class="pull-left">Last name</span> Doe</li>
-            <li class="list-group-item text-right"><span class="pull-left">Username</span>joed</li>
-            <li class="list-group-item text-right"><span class="pull-left">Password</span>*********</li>
-      </ul> 
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" class="form-control" placeholder="First Name" required autofocus>
+      </div>
+      <div class="form-group">  
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" class="form-control" placeholder="Last Name" required>
+      </div>
+      <div class="form-group"> 
+        <label for="inputEmail">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+      </div>
+      <div class="form-group"> 
+        <label for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      </div>
+      <div class="form-group">  
+        <label for="confirmPassword"> Confirm Password</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Retype Password" required>
+      </div>
+
       <button class="btn btn-lg btn-danger btn-block" type="submit">Submit Changes</button>
       
   </div> <!-- /container -->

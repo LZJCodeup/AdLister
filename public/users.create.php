@@ -50,11 +50,6 @@
             <label for="inputPasswordAgain">Retype Password</label>
             <input type="password" id="password2" class="form-control" placeholder="Retype Password" required>
         </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
       </form>
 
