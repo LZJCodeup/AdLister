@@ -23,20 +23,50 @@
             <h2>Most Recent Ads</h2>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    <img src="http://placehold.it/350x300" class="img-responsive">
-                    <p>ad content...</p>
+                    <a href="#">
+                        <img src="http://placehold.it/350x300" class="img-responsive">
+                    </a>
+                    <p class="text-center">
+                        <a href="#"><strong>Title</strong></a>
+                    </p>
+                    <p>
+                        <a href="#">Description...</a>
+                    </p>
+                    <p>
+                        <a href="#">$price</a>
+                    </p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    <img src="http://placehold.it/350x300" class="img-responsive">
-                    <p>ad content...</p>
+                    <a href="#">
+                        <img src="http://placehold.it/350x300" class="img-responsive">
+                    </a>
+                    <p class="text-center">
+                        <a href="#"><strong>Title</strong></a>
+                    </p>
+                    <p>
+                        <a href="#">Description...</a>
+                    </p>
+                    <p>
+                        <a href="#">$price</a>
+                    </p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="jumbotron">
-                    <img src="http://placehold.it/350x300" class="img-responsive">
-                    <p>ad content...</p>
+                    <a href="#">
+                        <img src="http://placehold.it/350x300" class="img-responsive">
+                    </a>
+                    <p class="text-center">
+                        <a href="#"><strong>Title</strong></a>
+                    </p>
+                    <p>
+                        <a href="#">Description...</a>
+                    </p>
+                    <p>
+                        <a href="#">$price</a>
+                    </p>
                 </div>
             </div>
         </div>
