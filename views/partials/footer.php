@@ -7,7 +7,7 @@
         </a>
     </p>
     <p class="text-right">
-        <a href="mailto:zachgulde@gmail.com, lettyfuentes2013@gmail.com, jeraldsaenz@me.com">
+        <a href="https://github.com/LZJCodeup">
             Contact Us
         </a>
     </p>

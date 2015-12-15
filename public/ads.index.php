@@ -34,30 +34,30 @@
             </tr>
             <tr>
                 <td>
-                    <a href="#">XBONE</a>
+                    <a href="/ads.show.php">XBONE</a>
                 </td>
                 <td>
-                    <a href="#">Very good condition ps4....</a>
+                    <a href="/ads.show.php">Very good condition ps4....</a>
                 </td>
                 <td>$199.99</td>
                 <td>12-04-15</td>
             </tr>
             <tr>
                 <td>
-                    <a href="#">macbook pro</a>
+                    <a href="/ads.show.php">macbook pro</a>
                 </td>
                 <td>
-                    <a href="#">ALMOST NEW have to get rid of it im moving...</a>
+                    <a href="/ads.show.php">ALMOST NEW have to get rid of it im moving...</a>
                 </td>
                 <td>$1000.00</td>
                 <td>12-01-15</td>
             </tr>
             <tr>
                 <td>
-                    <a href="#">Pressure Washing</a>
+                    <a href="/ads.show.php">Pressure Washing</a>
                 </td>
                 <td>
-                    <a href="#">I have the best rates on pressure washing...</a>
+                    <a href="/ads.show.php">I have the best rates on pressure washing...</a>
                 </td>
                 <td>Free Estimates</td>
                 <td>11-28-15</td>
