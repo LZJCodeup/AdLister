@@ -1,6 +1,9 @@
 <header class="container form-inline">
     <h1>
         Ad Lister!
-        <input type="text" class="pull-right form-control" placeholder="Search for an ad...">
+        <form action="/ads.index.php" class="pull-right">
+            <input type="text" class="form-control" placeholder="Search for an ad...">
+            <input type="submit" class="form-control" value="Go!">
+        </form>
     </h1>
 </header>

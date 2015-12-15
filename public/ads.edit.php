@@ -14,7 +14,7 @@
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Edit Ad</h1>
         <div id="edit-ad-frame" class="container-fluid">
-		   <form name="edit-ad-form">
+		   <form name="edit-ad-form" action="/ads.show.php">
 			<div class="form-group">
 				<label for="category-static-label" form="edit-ad-form" class="col-sm-2 control-label">Category</label>
 				<input class="form-control" type="text" placeholder="Category" readonly>
@@ -36,7 +36,7 @@
 			</div>
 			<button type="button" name="upload-img" id="upload-img" id="center-block" value="upload-img" class="btn btn-default
 					 btn-lg">Upload Image</button>
-			<button type="button" name="submit" id="submit" value="submit" class="btn btn-default btn-lg">Submit Changes</button>
+			<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg">Submit Changes</button>
 		  </form>
       </div>
 	<?php include '../views/partials/footer.php'; ?>
