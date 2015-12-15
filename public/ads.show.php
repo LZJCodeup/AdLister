@@ -24,6 +24,28 @@
             </select>
         </div>
     </div>
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Posted On</th>
+            </tr>
+            <tr>
+                <td>PS4</td>
+                <td>Very good condition ps4....</td>
+                <td>199.99</td>
+                <td>12-04-15</td>
+            </tr>
+            <tr>
+                <td>macbook pro</td>
+                <td>ALMOST NEW have to get rid of it im moving...</td>
+                <td>1000</td>
+                <td>12-01-15</td>
+            </tr>
+        </table>
+    </div>
 
     <?php include '../views/partials/footer.php'; ?>
 </body>
