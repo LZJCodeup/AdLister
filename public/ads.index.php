@@ -15,7 +15,7 @@
 
     <div class="container">
         <h1>All Ads</h1>
-        <div class="form-inline pull-right">
+        <div class="form-inline">
             <select class="form-control" name="sort" id="">
                 <option value="" selected disabled>Sort By...</option>
                 <option value="">Most Recent</option>
