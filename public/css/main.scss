@@ -33,3 +33,9 @@ main{
 select{
     margin-bottom: 20px;
 }
+
+.nav > li > a:hover,
+.nav > li > a:active{
+    background-color: inherit;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.2), rgba(255,255,255,0.6));
+}
