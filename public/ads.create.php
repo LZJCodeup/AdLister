@@ -10,6 +10,8 @@
 	    <link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
+		<?php include '../views/partials/header.php'; ?>
+		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Create Ad</h1>
         <div id="ad-create-frame" class="container-fluid">
 		   <form name="create-ad-form">
@@ -35,5 +37,6 @@
 			<button type="button" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Submit</button>
 		  </form>
       </div>
+	<?php include '../views/partials/footer.php'; ?>
 	</body>
 </html>

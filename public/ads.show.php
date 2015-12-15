@@ -10,6 +10,8 @@
 	    <link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
+	<?php include '../views/partials/header.php'; ?>
+	<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">View Ad</h1>
 		   	<form name="ad-view-form" action="" class="form-horizontal">
 				<div class="form-group">
@@ -44,5 +46,6 @@
 	    			</div>
 	    		</div>
     		</form>
+	<?php include '../views/partials/footer.php'; ?>
 	</body>
 
