@@ -1,13 +1,26 @@
 <?php 
 
-$ads = 
-[
-    ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
-    ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
-    ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
-];
 
-$loggedIn = true;
+
+function pageController()
+{
+    $ads = 
+    [
+        ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
+        ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
+        ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
+    ];
+
+    // down in the body of the html we would replace this with a call to Auth::loggedIn()
+    $loggedIn = true;
+
+    return [
+        'ads' => $ads,
+        'loggedIn' => $loggedIn
+    ];
+}
+
+extract(pageController());
 
  ?>
 
