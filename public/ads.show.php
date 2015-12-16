@@ -1,3 +1,26 @@
+<?php 
+	function pageController(){
+		session_start();
+		
+		$postCategory = 'Cars';
+		$postTitle = 'Car For Sale - Great Condition - Must Sell Now!!!';
+		$postPrice = '$50,000';
+		$postImage = "http://placehold.it/350x300";
+		$postDescription = 'This car is in great conditon.  4-door, new tires, ...';
+		$postID = "13456456456";
+
+		return array (
+			'postCategory' => $postCategory,
+			'postTitle'  => $postTitle,
+			'postPrice' => $postPrice,
+			'postImage' => $postImage,
+			'postDescription' => $postDescription,
+			'postID' => $postID
+			);
+	}
+	extract(pageController());
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,42 +33,44 @@
 	    <link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
-	<?php include '../views/partials/header.php'; ?>
-	<?php include '../views/partials/navbar.php'; ?>
+		<?php include '../views/partials/header.php'; ?>
+		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">View Ad</h1>
+  		<div id="show-ad-frame" class="container-fluid">
 		   	<form name="ad-view-form" action="" class="form-horizontal">
 				<div class="form-group">
-					<label for="posting-title-static-label" class="col-sm-2 control-label">Posting Title</label>
+					<label for="posting-title-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Title</label>
 					<div class="col-sm-10">
-	      				<p class="form-control-static">Sofa</p>
-	    			</div>
-	    		</div>
-	    		<div class="form-group">
-					<label for="price-static-label" class="col-sm-2 control-label">Price</label>
+		      			<p class="form-control-static" id="static-posting-title"><?= $postTitle ?></p>
+		    		</div>
+		    	</div>
+		    	<div class="form-group">
+					<label for="price-static-label" form="ad-view-form" class="col-sm-2 control-label">Price</label>
 					<div class="col-sm-10">
-	      				<p class="form-control-static">Sofa Price</p>
-	    			</div>
-	    		</div>
-	    			<br><img src="http://placehold.it/350x300" class="img-responsive center-block" alt="Responsive image"><br>
-	    		<div class="form-group">
-					<label for="posting-body-static-label" class="col-sm-2 control-label">Posting Description</label>
+		      			<p class="form-control-static" id="static-price"><?= $postPrice ?></p>
+		    		</div>
+		    	</div>
+		    	<br><img src="<?= $postImage ?>" class="img-responsive center-block" alt="Responsive image"><br>
+		    	<div class="form-group">
+					<label for="posting-body-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Description</label>
 					<div class="col-sm-10">
-	      				<p class="form-control-static">Posting Body Description</p>
-	    			</div>
-	    		</div>
-	    		<div class="form-group">
-					<label for="category-static-label" class="col-sm-2 control-label">Category</label>
+		      			<p class="form-control-static" id="static-post-description"><?= $postDescription ?></p>
+		    		</div>
+		    	</div>
+		    	<div class="form-group">
+					<label for="category-static-label" form="ad-view-form" class="col-sm-2 control-label">Category</label>
 					<div class="col-sm-10">
-	      				<p class="form-control-static">Assigned Category</p>
-	    			</div>
-	    		</div>
-	    		<div class="form-group">
-					<label for="postID-static-label" class="col-sm-2 control-label">Post ID#</label>
+		      			<p class="form-control-static" id="static-category"><?= $postCategory ?></p>
+		    		</div>
+		    	</div>
+		    	<div class="form-group">
+					<label for="postID-static-label" form="ad-view-form" class="col-sm-2 control-label">Post ID#</label>
 					<div class="col-sm-10">
-	      				<p class="form-control-static">1234567890</p>
-	    			</div>
-	    		</div>
+		      			<p class="form-control-static" id="static-postID"><?= $postID ?></p>
+		    		</div>
+		    	</div>
     		</form>
-	<?php include '../views/partials/footer.php'; ?>
+    	</div>
+		<?php include '../views/partials/footer.php'; ?>
 	</body>
 <html>
