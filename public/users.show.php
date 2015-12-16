@@ -1,3 +1,17 @@
+<?php 
+
+$email = 'guest@g.com';
+$firstName = 'Guest';
+$lastName = 'Doe';
+$password = '*********';
+
+$firstItem = 'MacBook';
+$secondItem = 'PHP coding';
+$thirdItem = 'Magic Mouse';
+
+
+?>
+
 <!doctype html>
 
 <html>
@@ -16,12 +30,12 @@
 	<div class="container">
       <h2>Profile</h2>
       <ul class="list-group">
-            <li class="list-group-item text-right"><span class="pull-left">Joined</span> 12.15.2015</li>
-            <li class="list-group-item text-right"><span class="pull-left">Last Login</span> Yesterday</li>
-            <li class="list-group-item text-right"><span class="pull-left">First name</span> Joseph</li>
-            <li class="list-group-item text-right"><span class="pull-left">Last name</span> Doe</li>
-            <li class="list-group-item text-right"><span class="pull-left">email address</span>joe@joe.com</li>
-            <li class="list-group-item text-right"><span class="pull-left">Password</span>*********</li>
+            <!-- <li class="list-group-item text-right"><span class="pull-left">Joined</span> 12.15.2015</li>
+            <li class="list-group-item text-right"><span class="pull-left">Last Login</span> Yesterday</li> -->
+            <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $firstName?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $lastName?></li>
+            <li class="list-group-item text-right"><span class="pull-left">email address</span><?= $email?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Password</span><?= $password?></li>
             <li class="list-group-item text-right">
               <a class="btn btn-med btn-primary" href="users.edit.php" type="submit">Edit Profile</a>
             </li>
@@ -29,17 +43,17 @@
       <br>
       <h2>Your Ads</h2>
       <ul class = "list-group">
-            <li class="list-group-item text-right"><span class="pull-left">First item</span> 
+            <li class="list-group-item text-right"><span class="pull-left"><?= $firstItem?></span> 
               <input type="hidden" name="Ads1" value="ad1">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left">Second item</span> 
+            <li class="list-group-item text-right"><span class="pull-left"><?= $secondItem?></span> 
               <input type="hidden" name="Ads2" value="ad2">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left">Third item</span> 
+            <li class="list-group-item text-right"><span class="pull-left"><?= $thirdItem?></span> 
               <input type="hidden" name="Ads3" value="ad3">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
