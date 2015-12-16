@@ -1,3 +1,24 @@
+<?php 
+	function pageController(){
+		session_start();
+		
+		$postCategory = 'Cars';
+		$postTitle = 'Car For Sale';
+		$postPrice = '$50,000';
+		$postDescription = 'This car is for sale.';
+		$postID = '123456789';
+
+		return array (
+			'category' => $postCategory,
+			'postTitle'  => $postTitle,
+			'postPrice' => $postPrice,
+			'postDescription' => $postDescription,
+			'postID' => $postID
+			);
+	}
+	extract(pageController());
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,32 +34,35 @@
 		<?php include '../views/partials/header.php'; ?>
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Edit Ad</h1>
-        <div id="edit-ad-frame" class="container-fluid">
-		   <form name="edit-ad-form" action="/ads.show.php">
-			<div class="form-group">
-				<label for="category-static-label" form="edit-ad-form" class="col-sm-2 control-label">Category</label>
-				<input class="form-control" type="text" placeholder="Category" readonly>
-			</div>
-			<div class="form-group">
-				<label for="posting-title-static-label" form="edit-ad-form" class="col-sm-2 control-label">Posting Title</label>
-				<input type="text" name="posting-title-txtbox" class="form-control" id="posting-title-txtbox">
 
-				<label for="price-static-label" form="edit-ad-form" class="col-sm-2">Price $</label>
-				<input type="text" name="price-txtbox" class="form-control" id="price-txtbox">
-			</div>
-			<div class="form-group">
-				<label for="posting-body-static-label" form="edit-ad-form" class="col-sm-2">Posting Body</label><br>
-				<textarea class="form-control" rows="10" id="posting-body-txtbox"></textarea>
-			</div>	
-			<div class="form-group">
-				<label for="postID-static-label" form="edit-ad-form" class="col-sm-2 control-label">Post ID#</label>
-				<input class="form-control" type="text" placeholder="Posting Identification Number" readonly>
-			</div>
-			<button type="button" name="upload-img" id="upload-img" id="center-block" value="upload-img" class="btn btn-default
+        <div id="edit-ad-frame" class="container-fluid">
+			<form name="edit-ad-form" method="POST" action="/ads.show.php">
+				<div class="form-group">
+					<label for="category-static-label" form="edit-ad-form" class="col-sm-2 control-label">Category</label>
+					<input class="form-control" type="text" placeholder="<?= $postCategory ?>" readonly>
+				</div>
+				<div class="form-group">
+					<label for="posting-title-static-label" form="edit-ad-form" class="col-sm-2 control-label">Posting Title</label>
+					<input type="text" name="posting-title-txtbox" class="form-control" id="posting-title-txtbox" value="<?= $postTitle ?>">
+				</div>
+				<div class="form-group">
+					<label for="price-static-label" form="edit-ad-form" class="col-sm-2">Price $</label>
+					<input type="text" name="price-txtbox" class="form-control" id="price-txtbox" value="<?= $postPrice ?>">
+				</div>
+				<div class="form-group">
+					<label for="posting-body-static-label" form="edit-ad-form" class="col-sm-2">Posting Description</label><br>
+					<textarea class="form-control" name="posting-body-txtbox" rows="10" id="posting-body-txtbox"><?=$postDescription ?></textarea>
+				</div>	
+				<div class="form-group">
+					<label for="postID-static-label" form="edit-ad-form" class="col-sm-2 control-label">Post ID#</label>
+					<input class="form-control" type="text" placeholder="<?= $postID ?>" readonly>
+				</div>
+				<button type="button" name="upload-img" id="upload-img" id="center-block" value="upload-img" class="btn btn-default
 					 btn-lg">Upload Image</button>
-			<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg">Submit Changes</button>
-		  </form>
-      </div>
-	<?php include '../views/partials/footer.php'; ?>
+				<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg">Submit Changes</button>
+			</form>
+      	</div>
+
+		<?php include '../views/partials/footer.php'; ?>
 	</body>
 </html>
