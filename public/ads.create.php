@@ -10,9 +10,11 @@
 	    <link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
+		<?php include '../views/partials/header.php'; ?>
+		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Create Ad</h1>
         <div id="ad-create-frame" class="container-fluid">
-		   <form name="create-ad-form">
+		   <form name="create-ad-form" action="/ads.show.php">
 			<div class="form-group">
 				<label for="category-static-label" form="create-ad-form" class="col-sm-2 control-label">Category</label>
 				<!-- specify type -->
@@ -32,8 +34,9 @@
 			</div>	
 			<button type="button" name="upload-img" id="upload-img" value="upload-img" class="btn btn-default 
 					btn-lg btn-center">Upload Image</button>
-			<button type="button" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Submit</button>
+			<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Submit</button>
 		  </form>
       </div>
+	<?php include '../views/partials/footer.php'; ?>
 	</body>
 </html>

@@ -1,0 +1,38 @@
+// dark green #4F5C31
+// light green #779D49
+$darkGreen : #4F5C31;
+$lightGreen: #779D49;
+
+nav{
+    background   : linear-gradient(to bottom, $darkGreen, $lightGreen, $darkGreen);
+    border-top   : 1px solid black;
+    border-bottom: 1px solid black;
+
+    a{
+        transition: all 0.3s;
+        color: white;
+    }
+}
+
+main{
+    color: $darkGreen;
+    background: rgb(230,230,230);
+
+    h1{
+        margin: 50px 0;
+    }
+
+    h3{
+        margin: 50px 0;
+    }
+}
+
+select{
+    margin-bottom: 20px;
+}
+
+.nav > li > a:hover,
+.nav > li > a:active{
+    color: deepskyblue;
+    background-color: rgba(0,0,0,0.3);
+}

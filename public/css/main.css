@@ -1,0 +1,25 @@
+nav {
+  background: linear-gradient(to bottom, #4F5C31, #779D49, #4F5C31);
+  border-top: 1px solid black;
+  border-bottom: 1px solid black; }
+  nav a {
+    transition: all 0.3s;
+    color: white; }
+
+main {
+  color: #4F5C31;
+  background: #e6e6e6; }
+  main h1 {
+    margin: 50px 0; }
+  main h3 {
+    margin: 50px 0; }
+
+select {
+  margin-bottom: 20px; }
+
+.nav > li > a:hover,
+.nav > li > a:active {
+  color: deepskyblue;
+  background-color: rgba(0, 0, 0, 0.3); }
+
+/*# sourceMappingURL=main.css.map */
