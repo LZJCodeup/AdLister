@@ -1,3 +1,22 @@
+<?php 
+
+$loggedIn = false;
+
+$ads = 
+[
+    ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
+    ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
+    ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
+];
+
+$ads = array_map(function($ad){
+    $date = strtotime($ad['date_posted']);
+    $ad['date_posted'] = date("F d, Y", $date);
+    return $ad;
+}, $ads);
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,36 +51,14 @@
                 <th>Price</th>
                 <th>Posted On</th>
             </tr>
-            <tr>
-                <td>
-                    <a href="/ads.show.php">XBONE</a>
-                </td>
-                <td>
-                    <a href="/ads.show.php">Very good condition ps4....</a>
-                </td>
-                <td>$199.99</td>
-                <td>12-04-15</td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="/ads.show.php">macbook pro</a>
-                </td>
-                <td>
-                    <a href="/ads.show.php">ALMOST NEW have to get rid of it im moving...</a>
-                </td>
-                <td>$1000.00</td>
-                <td>12-01-15</td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="/ads.show.php">Pressure Washing</a>
-                </td>
-                <td>
-                    <a href="/ads.show.php">I have the best rates on pressure washing...</a>
-                </td>
-                <td>Free Estimates</td>
-                <td>11-28-15</td>
-            </tr>
+            <?php foreach ($ads as $ad): ?>
+                <tr>
+                    <td><a href="/ads.show.php?id=<?= $ad['id']; ?>"><?= $ad['title']; ?></a></td>
+                    <td><a href="/ads.show.php?id=<?= $ad['id']; ?>"><?= $ad['description']; ?></a></td>
+                    <td><?= $ad['price']; ?></td>
+                    <td><?= $ad['date_posted']; ?></td>
+                </tr>
+            <?php endforeach; ?>
         </table>
     </div>
 

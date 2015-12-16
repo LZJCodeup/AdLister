@@ -1,3 +1,16 @@
+<?php 
+
+$ads = 
+[
+    ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
+    ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
+    ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
+];
+
+$loggedIn = true;
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,54 +34,24 @@
     <div class="container">
         <div class="row">
             <h2>Most Recent Ads</h2>
-            <div class="col-md-4">
-                <div class="jumbotron">
-                    <a href="/ads.show.php">
-                        <img src="http://placehold.it/350x300" class="img-responsive">
-                    </a>
-                    <p class="text-center">
-                        <a href="/ads.show.php"><strong>Title</strong></a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">Description...</a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">$price</a>
-                    </p>
+            <?php foreach ($ads as $ad): ?>
+                <div class="col-md-4">
+                    <div class="jumbotron">
+                        <a href="/ads.show.php">
+                            <img src="http://placehold.it/350x300" class="img-responsive">
+                        </a>
+                        <p class="text-center">
+                            <a href="/ads.show.php?id=<?= $ad['id']; ?>"><strong><?= $ad['title'] ?></strong></a>
+                        </p>
+                        <p>
+                            <a href="/ads.show.php?id=<?= $ad['id']; ?>"><?= $ad['description']; ?></a>
+                        </p>
+                        <p>
+                            <a href="/ads.show.php?id=<?= $ad['id']; ?>">$<?= $ad['price']; ?></a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="jumbotron">
-                    <a href="/ads.show.php">
-                        <img src="http://placehold.it/350x300" class="img-responsive">
-                    </a>
-                    <p class="text-center">
-                        <a href="/ads.show.php"><strong>Title</strong></a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">Description...</a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">$price</a>
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="jumbotron">
-                    <a href="/ads.show.php">
-                        <img src="http://placehold.it/350x300" class="img-responsive">
-                    </a>
-                    <p class="text-center">
-                        <a href="/ads.show.php"><strong>Title</strong></a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">Description...</a>
-                    </p>
-                    <p>
-                        <a href="/ads.show.php">$price</a>
-                    </p>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
     <?php include '../views/partials/footer.php'; ?>
