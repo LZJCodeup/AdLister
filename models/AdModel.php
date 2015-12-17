@@ -74,26 +74,23 @@ class AdModel extends BaseModel {
             echo "no id!\n";
 
             $categoryId = self::getCategoryId($this->category);
-            echo "--------------------\ninside save()\nvar dump categoryId...\n";
-            var_dump($categoryId);
-
-
-            // ad category
-            // query the db and grab all the categories
-            // if $ad->category is in the categories table, insert the category id
-            // else insert a new category into the db, get its id and set the category id
-            // equal to the new id
 
             $query = "INSERT INTO ads (title, price, description, image, 
                         date_posted, category_id, users_id) VALUES 
                         (:title, :price, :description, :image, :date_posted, 
                         :category_id, :users_id)";
 
-            // $stmt = static::$dbc->prepare($query);
+            $stmt = static::$dbc->prepare($query);
 
-            // $stmt->bindValue(":$key", $value, PDO::PARAM_STR);
+            $stmt->bindValue(":title", $this->title, PDO::PARAM_STR);
+            $stmt->bindValue(":price", $this->price, PDO::PARAM_STR);
+            $stmt->bindValue(":description", $this->description, PDO::PARAM_STR);
+            $stmt->bindValue(":image", $this->image, PDO::PARAM_STR);
+            $stmt->bindValue(":date_posted", $this->date_posted, PDO::PARAM_STR);
+            $stmt->bindValue(":category_id", $categoryId, PDO::PARAM_STR);
+            $stmt->bindValue(":users_id", $this->users_id, PDO::PARAM_STR);
 
-            // $stmt->execute();
+            $stmt->execute();
 
 
         }
