@@ -1,19 +1,29 @@
 <?php 
+function pageController()
+{
+    $loggedIn = false;
 
-$loggedIn = false;
+    // this simulates the return of a sql query
+    $ads = 
+    [
+        ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
+        ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
+        ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
+    ];
 
-$ads = 
-[
-    ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
-    ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
-    ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
-];
+    $ads = array_map(function($ad){
+        $date = strtotime($ad['date_posted']);
+        $ad['date_posted'] = date("F d, Y", $date);
+        return $ad;
+    }, $ads);
 
-$ads = array_map(function($ad){
-    $date = strtotime($ad['date_posted']);
-    $ad['date_posted'] = date("F d, Y", $date);
-    return $ad;
-}, $ads);
+    return [
+        'ads' => $ads,
+        'loggedIn' => $loggedIn
+    ];
+}
+
+extract(pageController());
 
  ?>
 
