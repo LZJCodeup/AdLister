@@ -73,7 +73,7 @@ class AdModel extends BaseModel {
             // no id, lets insert
             echo "no id!\n";
 
-            $categoryId = $this->getCategoryId($this->category);
+            $categoryId = self::getCategoryId($this->category);
             echo "--------------------\ninside save()\nvar dump categoryId...\n";
             var_dump($categoryId);
 
@@ -104,7 +104,7 @@ class AdModel extends BaseModel {
      * in the categories table, it will insert it,
      * otherwise it will return the category id
      */
-    private function getCategoryId($categoryName)
+    private static function getCategoryId($categoryName)
     {
         echo 'getCategoryId called!' . PHP_EOL;
         $categories = CategoryModel::all();
@@ -117,13 +117,12 @@ class AdModel extends BaseModel {
         }
 
         // category wasn't found, so we need to insert one
-        echo "inserting category...";
-        $query = 'INSERT INTO categories category_name, VALUE :category_name;';
+        $query = 'INSERT INTO categories (category_name) VALUES (:category_name)';
         $stmt = static::$dbc->prepare($query);
         $stmt->bindValue(":category_name", $categoryName, PDO::PARAM_STR);
         $stmt->execute();
 
-        return $this->getCategoryId($categoryName);
+        return self::getCategoryId($categoryName);
     }
 
 }
