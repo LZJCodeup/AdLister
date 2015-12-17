@@ -1,4 +1,6 @@
 <?php
+require 'adlister_db_config.php';
+require 'db_connect.php';
 
 //outputs successful connection
 echo $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
