@@ -1,3 +1,2 @@
-*config.*
-adlister_db_config.php
-db_connect.php
+*/*config.*
+*/db_connect.php
