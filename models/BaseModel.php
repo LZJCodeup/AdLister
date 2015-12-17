@@ -126,8 +126,6 @@ abstract class BaseModel {
     {
         self::dbConnect();
 
-        echo "BaseModel find running!\n";
-
         $table = static::$table;
 
         $query = "SELECT * from {$table} WHERE id = :id";
