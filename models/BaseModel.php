@@ -1,5 +1,7 @@
 <?php
 
+require_once '../database/adlister_db_config.php';
+
 abstract class BaseModel {
 
     protected static $dbc;
