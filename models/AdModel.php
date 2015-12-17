@@ -71,8 +71,6 @@ class AdModel extends BaseModel {
 
         } else {
             // no id, lets insert
-            echo "no id!\n";
-
             $categoryId = self::getCategoryId($this->category);
 
             $query = "INSERT INTO ads (title, price, description, image, 
@@ -103,7 +101,6 @@ class AdModel extends BaseModel {
      */
     private static function getCategoryId($categoryName)
     {
-        echo 'getCategoryId called!' . PHP_EOL;
         $categories = CategoryModel::all();
         
         // find the category id
