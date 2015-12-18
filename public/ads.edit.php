@@ -1,5 +1,56 @@
 <?php 
-	function pageController(){
+	require_once '../database/adlister_db_config.php';
+	require_once '../database/db_connect.php';
+	require_once '../utils/Input.php';
+	
+	function processForm ($dbc)
+	{	
+		$errors = [];
+		$errors['count'] = 0;
+		//form was submitted when $_POST is not empty
+		if (!empty($_POST))
+		{
+			sanitizeInput();
+			try {
+				$category = Input::getString('category');
+			} catch (Exception $e) {
+				$errors['category'] = 'Category: ' . $e->getMessage();
+				$errors['count']++;
+			}
+			try {
+				$postingTitle = Input::getString('title');
+			} catch (Exception $e) {
+				$errors['title'] = 'Posting Title: ' . $e->getMessage();
+				$errors['count']++;
+			}
+			try {
+				$price= Input::getNumber('price');
+			} catch (Exception $e) {
+				$errors['price'] = 'Price: ' . $e->getMessage();
+				$errors['count']++;
+			}
+			try {
+				$description = Input::getString('description');
+			} catch (Exception $e) {
+				$errors['description'] = 'Description: ' . $e->getMessage();
+				$errors['count']++;
+			}
+			try {
+				$date_posted = Input::getDate('date_posted');
+			} catch (Exception $e) {
+				$errors['date_posted'] = 'Date Posted: ' . $e->getMessage();
+				$errors['count']++;
+			}
+			if ($errors['count'] == 0)
+			{
+				// $message = insertPost(trim($category), trim($postingTitle), trim($price), trim($description), $date_posted->format('Y-m-d'), $dbc);
+				// $errors['successful'] = $message;
+			} 
+		}
+		return $errors;
+	}
+
+	function pageController($dbc){
 		session_start();
 		
 		$postCategory = 'Cars';
@@ -16,7 +67,7 @@
 			'postID' => $postID
 			);
 	}
-	extract(pageController());
+	extract(pageController($dbc));
 ?>
 
 <!DOCTYPE html>
@@ -36,25 +87,25 @@
 		<h1 class="text-center">Edit Ad</h1>
 
         <div id="edit-ad-frame" class="container-fluid">
-			<form name="edit-ad-form" method="POST" action="/ads.show.php">
+			<form method="POST" action="/ads.show.php">
 				<div class="form-group">
-					<label for="category-static-label" form="edit-ad-form" class="col-sm-2 control-label">Category</label>
+					<label for="category-static-label" class="col-sm-2 control-label">Category</label>
 					<input class="form-control" type="text" placeholder="<?= $postCategory ?>" readonly>
 				</div>
 				<div class="form-group">
-					<label for="posting-title-static-label" form="edit-ad-form" class="col-sm-2 control-label">Posting Title</label>
-					<input type="text" name="posting-title-txtbox" class="form-control" id="posting-title-txtbox" value="<?= $postTitle ?>">
+					<label for="posting-title-static-label" class="col-sm-2 control-label">Posting Title</label>
+					<input type="text" name="title" class="form-control" id="posting-title-txtbox" value="<?= $postTitle ?>">
 				</div>
 				<div class="form-group">
-					<label for="price-static-label" form="edit-ad-form" class="col-sm-2">Price $</label>
-					<input type="text" name="price-txtbox" class="form-control" id="price-txtbox" value="<?= $postPrice ?>">
+					<label for="price-static-label" class="col-sm-2">Price $</label>
+					<input type="text" name="price" class="form-control" id="price-txtbox" value="<?= $postPrice ?>">
 				</div>
 				<div class="form-group">
-					<label for="posting-body-static-label" form="edit-ad-form" class="col-sm-2">Posting Description</label><br>
-					<textarea class="form-control" name="posting-body-txtbox" rows="10" id="posting-body-txtbox"><?=$postDescription ?></textarea>
+					<label for="posting-body-static-label" class="col-sm-2">Posting Description</label><br>
+					<textarea class="form-control" name="description" rows="10" id="posting-body-txtbox"><?=$postDescription ?></textarea>
 				</div>	
 				<div class="form-group">
-					<label for="postID-static-label" form="edit-ad-form" class="col-sm-2 control-label">Post ID#</label>
+					<label for="postID-static-label" class="col-sm-2 control-label">Post ID#</label>
 					<input class="form-control" type="text" placeholder="<?= $postID ?>" readonly>
 				</div>
 				<button type="button" name="upload-img" id="upload-img" id="center-block" value="upload-img" class="btn btn-default
