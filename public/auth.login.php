@@ -1,26 +1,35 @@
 <?php
 // require_once 'bootstrap.php';
-require_once 'input.php';
+//require_once 'input.php';
 
 function pageController()
 {
   session_start();
   
-  if (isset($_SESSION['IS_LOGGED_IN']) && ($_SESSION['IS_LOGGED_IN'])) {
+  if(isLoggedIn())
+  {
     header("Location: index.php");
     exit();
   }
 
   $email =Input::getString('email');
   $password=Input::getString('password');
-  $hash= password_hash($password, PASSWORD_DEFAULT);
-  $attempt = Auth::attempt($email, $hash);
+  $user = UserModel::findByEmail();
   
-  if(!$attempt)
+  if(empty($user))
   {
+   header("Location: user.create.php");
+    exit(); 
+  }
+
+  $attempt = Auth::attempt($user,$password);
+  
+  if($attempt)
+  {
+    Auth::setSessionVariables($user);
+  } else {
     $error = 'Login Failed';
   } 
-  
   return array(
     'email'   => $email,
     'error'   => $error
