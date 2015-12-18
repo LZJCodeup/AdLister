@@ -1,24 +1,29 @@
 <?php
+// require_once 'bootstrap.php';
+require_once 'input.php';
+
 function pageController()
 {
   session_start();
   
   if (isset($_SESSION['IS_LOGGED_IN']) && ($_SESSION['IS_LOGGED_IN'])) {
-    header("Location: users.show.php");
-  }
-  //$user = USER::findUser($email);
-  $email = isset($_POST['email']) ? htmlspecialchars(strip_tags($_POST['email'])) : '';
-  $password = isset($_POST['password']) ? htmlspecialchars(strip_tags($_POST['password'])) : '';
-    
-    if(($email == "guest@g.com") && ($password == "password")){
-     $_SESSION['LOGGED_IN_USER'] = $name;
-     $_SESSION['IS_LOGGED_IN'] = true;
-     header("Location: users.show.php");
+    header("Location: index.php");
+    exit();
   }
 
+  $email =Input::getString('email');
+  $password=Input::getString('password');
+  $hash= password_hash($password, PASSWORD_DEFAULT);
+  $attempt = Auth::attempt($email, $hash);
+  
+  if(!$attempt)
+  {
+    $error = 'Login Failed';
+  } 
+  
   return array(
-  'email'    => $email,
-  'password'  => $password
+    'email'   => $email,
+    'error'   => $error
   );
 }
 extract(pageController());
@@ -48,18 +53,11 @@ extract(pageController());
         <input type="email" id="inputEmail" class="form-control" name ="email" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control"  name="password" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
         <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign Up</button>
       </form>
-      <?php if($_POST):?>
-        <?php if(($email != "guest@g.com") || ($email != '')) :?>
-        <p>LOGIN Failed</p>
+        <?php if(!empty($error)) :?>
+        <p><?= $error?></p>
         <?php endif; ?>
-      <?php endif; ?>
     </div> <!-- /container -->
 <?php include '../views/partials/footer.php'; ?>
 </body>
