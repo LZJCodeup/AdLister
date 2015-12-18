@@ -90,7 +90,7 @@ class AdModel extends BaseModel {
 
             $stmt->execute();
 
-
+            $this->id = static::$dbc->lastInsertId();
         }
     }
 
