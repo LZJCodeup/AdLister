@@ -1,13 +1,19 @@
 <?php 
 
 require_once '../models/AdModel.php';
+require_once '../utils/Input.php';
 
 function pageController()
 {
     $loggedIn = false;
 
-    // this simulates the return of a sql query
-    $ads = AdModel::all();
+    try {
+        $query = Input::getString('query');
+    } catch (Exception $e) {
+        $query = '';
+    }
+
+    $ads = AdModel::search($query);
 
     $ads = array_map(function($ad){
         $truncateAt = 15;
