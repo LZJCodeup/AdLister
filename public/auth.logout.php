@@ -20,6 +20,6 @@ function endSession()
     session_destroy();
 }
 	endSession();
-	header("Location: login.php");
+	header("Location: auth.login.php");
 	die();
 ?>

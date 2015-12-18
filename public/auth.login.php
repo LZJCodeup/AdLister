@@ -1,5 +1,6 @@
 <?php
 // require_once 'bootstrap.php';
+require_once 'input.php';
 
 function pageController()
 {
