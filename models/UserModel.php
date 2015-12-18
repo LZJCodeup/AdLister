@@ -23,4 +23,16 @@ class UserModel extends BaseModel {
         }
         return $ads;
     }
+
+    public static function findByEmail($email)
+    {
+        self::dbConnect();
+
+        $query = "SELECT id FROM users WHERE email = :email";
+        $stmt = self::$dbc->prepare($query);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $userId =  $stmt->fetch()['id'];
+        return self::find($userId);
+    }
 }

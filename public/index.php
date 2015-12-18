@@ -1,15 +1,18 @@
 <?php 
 
-
+require_once '../models/AdModel.php';
 
 function pageController()
 {
-    $ads = 
-    [
-        ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
-        ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
-        ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
-    ];
+    $ads = AdModel::getMostRecent(3);
+
+    $ads = array_map(function($ad){
+        $truncateAt = 15;
+        if (strlen($ad['description']) > $truncateAt){
+            $ad['description'] = substr($ad['description'], 0, $truncateAt) . '...';
+        }
+        return $ad;
+    }, $ads);
 
     // down in the body of the html we would replace this with a call to Auth::loggedIn()
     $loggedIn = true;
@@ -48,7 +51,7 @@ extract(pageController());
         <div class="row">
             <h2>Most Recent Ads</h2>
             <?php foreach ($ads as $ad): ?>
-                <div class="col-md-4">
+                <div class="col-md-<?= floor(12 / count($ads)); ?>">
                     <div class="jumbotron">
                         <a href="/ads.show.php">
                             <img src="http://placehold.it/350x300" class="img-responsive">

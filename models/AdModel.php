@@ -34,7 +34,6 @@ class AdModel extends BaseModel {
             foreach ($result as $key => $value) {
                 $instance->$key = $value;
             }
-            // $instance->attributes = $result;
         }
 
         return $instance;
@@ -71,7 +70,7 @@ class AdModel extends BaseModel {
 
         } else {
             // no id, lets insert
-            $categoryId = self::getCategoryId($this->category);
+            $categoryId = CategoryModel::getCategoryId($this->category);
 
             $query = "INSERT INTO ads (title, price, description, image, 
                         date_posted, category_id, users_id) VALUES 
@@ -95,31 +94,6 @@ class AdModel extends BaseModel {
     }
 
     /**
-     * will query the db and get all the categories, if the categoryName is not
-     * in the categories table, it will insert it,
-     * otherwise it will return the category id
-     */
-    private static function getCategoryId($categoryName)
-    {
-        $categories = CategoryModel::all();
-        
-        // find the category id
-        foreach ($categories as $cat) {
-            if ($categoryName == $cat['category_name']) {
-                return $cat['id'];
-            }
-        }
-
-        // category wasn't found, so we need to insert one
-        $query = 'INSERT INTO categories (category_name) VALUES (:category_name)';
-        $stmt = static::$dbc->prepare($query);
-        $stmt->bindValue(":category_name", $categoryName, PDO::PARAM_STR);
-        $stmt->execute();
-
-        return self::getCategoryId($categoryName);
-    }
-
-    /**
      * returns a two dimensional array with one inner array representing one ad
      */
     public static function all()
@@ -134,6 +108,66 @@ class AdModel extends BaseModel {
 
         $stmt = self::$dbc->query($myQuery);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public static function getMostRecent($num = 3)
+    {
+        self::dbConnect();
+
+        $myQuery = "SELECT ads.id, ads.title, ads.price, ads.description, ads.image,
+        ads.date_posted, c.category_name as 'category', u.email as 'user'
+        FROM ads
+        JOIN categories as c ON ads.category_id = c.id
+        JOIN users as u ON ads.users_id = u.id
+        ORDER BY ads.id DESC
+        LIMIT $num";
+
+        $stmt = self::$dbc->query($myQuery);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /**
+     * takes a search string and returns a two dimensional array containing
+     * ad records matching the search string
+     * Will first search the ad titles, but if no results come back, will search
+     * the ad descriptions
+     */
+    public static function search($search)
+    {
+        self::dbConnect();
+
+        $search = "%$search%";
+
+        $query = "SELECT ads.id, ads.title, ads.price, ads.description, ads.image,
+            ads.date_posted, c.category_name as 'category', u.email as 'user'
+            FROM ads
+            JOIN categories as c ON ads.category_id = c.id
+            JOIN users as u ON ads.users_id = u.id
+            WHERE ads.title LIKE :query";;
+
+        $stmt = self::$dbc->prepare($query);
+        $stmt->bindValue(':query', $search, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($result)){
+            $query = "SELECT ads.id, ads.title, ads.price, ads.description, ads.image,
+                ads.date_posted, c.category_name as 'category', u.email as 'user'
+                FROM ads
+                JOIN categories as c ON ads.category_id = c.id
+                JOIN users as u ON ads.users_id = u.id
+                WHERE ads.description LIKE :query";;
+
+            $stmt = self::$dbc->prepare($query);
+            $stmt->bindValue(':query', $search, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        }
 
         return $result;
     }
