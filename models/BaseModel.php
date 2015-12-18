@@ -114,6 +114,8 @@ abstract class BaseModel {
             }
 
             $stmt->execute();
+
+            $this->id = self::$dbc->lastInsertId();
         }
     }
 
