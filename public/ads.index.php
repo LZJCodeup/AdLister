@@ -1,15 +1,28 @@
 <?php 
+
+require_once '../models/AdModel.php';
+require_once '../utils/Input.php';
+
 function pageController()
 {
     $loggedIn = false;
 
-    // this simulates the return of a sql query
-    $ads = 
-    [
-        ['id' => '1', 'title' => 'XBONE', 'description' => 'A great condition Xbox', 'price' => '199.99', 'date_posted' => '2015-12-04'],
-        ['id' => '2', 'title' => 'MacBook Pro', 'description' => 'ALMOST NEW have to get rid of it im moving...', 'price' => '1000 OBO', 'date_posted' => '2015-12-01'],
-        ['id' => '3', 'title' => 'Pressure Washing', 'description' => 'I have the best rates on pressure washing', 'price' => 'Free Estimates', 'date_posted' => '2015-11-28']
-    ];
+    try {
+        $query = Input::getString('query');
+    } catch (Exception $e) {
+        $query = '';
+    }
+
+    $ads = AdModel::search($query);
+
+    $ads = array_map(function($ad){
+        $truncateAt = 15;
+        if (strlen($ad['description']) > $truncateAt){
+            $ad['description'] = substr($ad['description'], 0, $truncateAt) . '...';
+        }
+        return $ad;
+    }, $ads);
+
 
     $ads = array_map(function($ad){
         $date = strtotime($ad['date_posted']);
@@ -60,6 +73,7 @@ extract(pageController());
                 <th>Description</th>
                 <th>Price</th>
                 <th>Posted On</th>
+                <th>Category</th>
             </tr>
             <?php foreach ($ads as $ad): ?>
                 <tr>
@@ -67,6 +81,7 @@ extract(pageController());
                     <td><a href="/ads.show.php?id=<?= $ad['id']; ?>"><?= $ad['description']; ?></a></td>
                     <td><?= $ad['price']; ?></td>
                     <td><?= $ad['date_posted']; ?></td>
+                    <td><?= $ad['category']; ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>
