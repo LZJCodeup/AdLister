@@ -11,6 +11,7 @@ abstract class BaseModel {
 
     /*
      * Constructor
+     * connects to the database and creates a dbc property
      */
     public function __construct()
     {
@@ -19,8 +20,9 @@ abstract class BaseModel {
 
     /*
      * Connect to the DB
+     * if already connected, do nothing
      */
-    private static function dbConnect()
+    protected static function dbConnect()
     {
         if (!self::$dbc)
         {
@@ -51,6 +53,11 @@ abstract class BaseModel {
 
     /*
      * Persist the object to the database
+     *
+     * if there is an id set, then the object was generated from the static
+     * find method, so we will be doing an update
+     * if there is no id, then the object was newly created and we need to
+     * insert a new record
      */
     public function save()
     {
@@ -137,6 +144,7 @@ abstract class BaseModel {
 
     /*
      * Find all records in a table
+     * returns an 2 dimensional array with each inner array being one record
      */
     public static function all()
     {
@@ -148,14 +156,12 @@ abstract class BaseModel {
         $stmt = self::$dbc->query($myQuery);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $instance = null;
-        if ($result) {
-            $instance = new static;
-            $instance->attributes = $result;
-        }
-        return $instance;
+        return $result;
     }
 
+    /**
+     * deletes a record from the database based on id
+     */
     public static function delete($id)
     {
         self::dbConnect();
