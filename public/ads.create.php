@@ -2,11 +2,14 @@
 	require_once '../database/adlister_db_config.php';
 	require_once '../database/db_connect.php';
 	require_once '../utils/Input.php';
+	require_once '../models/AdModel.php';
 
 	function processForm ($dbc)
 	{	
 		$errors = [];
 		$errors['count'] = 0;
+		$today = date("Y-m-d");  //pass this to be inserted into the database
+
 		//form was submitted when $_POST is not empty
 		if (!empty($_POST))
 		{
@@ -42,9 +45,17 @@
 			}
 			if ($errors['count'] == 0)
 			{
-				// $message = insertPost(trim($category), trim($postingTitle), trim($price), trim($description), $date_posted->format('Y-m-d'), $dbc);
-				//user_id can be obtained from the session
-				// $errors['successful'] = $message;
+			 	$postImage = "http://placehold.it/350x300";
+				$adObject = new AdModel();
+				$adObject->category = $category;
+				$adObject->title = $postingTitle;
+				$adObject->price = $price;
+				$adObject->description = $description;
+				$adObject->image = $postImage;
+				$adObject->date_posted = $today;
+				// $adObject->user_id = $_SESSION['user_id'];
+				$adObject->users_id = 1;
+				$adObject->save();
 			} 
 		}
 		return $errors;
@@ -54,7 +65,6 @@
 		session_start();
 		
 		$categorySelectionList = ['Cars', 'Boats', 'Trucks', 'Diesel Trucks'];
-		$today = date("Y-m-d");  //pass this to be inserted into the database
 		$errors = processForm($dbc);
 
 		return array (
@@ -64,7 +74,7 @@
 	}
 	extract(pageController($dbc));
 	var_dump ($_POST);
-	var_dump($_REQUEST);
+	// var_dump($_REQUEST);
 	// var_dump ($errorMessages);
 ?>
 
@@ -84,16 +94,16 @@
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Create Ad</h1>
         <div id="ad-create-frame" class="container-fluid">
-			<!-- <form method="POST" action="/ads.show.php"> -->
-			<form method="POST">
+			<form method="POST" action="/ads.show.php">
+			<!-- <form method="POST"> -->
 				<div class="form-group">
 					<label for="category-static-label" class="col-sm-2 control-label">Category</label>
 					<select name="category" class="form-control" id="category-dropdown-selector">
-  						<?php foreach ($categorySelectionList as $index => $selection): ?>
+  						<?php foreach ($categorySelectionList as $selection): ?>
   							<?php if($selection == Input::get('category')) : ?>
-								<option selected value="<?= $index; ?>"><?= $selection; ?> </option>
+								<option selected value="<?= $selection; ?>"><?= $selection; ?> </option>
 							<?php else : ?>
-								<option value="<?= $index ?>"><?= $selection; ?> </option>
+								<option value="<?= $selection ?>"><?= $selection; ?> </option>
 							<?php endif; ?>
   						<?php endforeach ?>
 					</select>
@@ -102,6 +112,7 @@
 					<label for="posting-title-static-label" class="col-sm-2 control-label">Posting Title</label>
 					<input type="text" name="title" class="form-control" id="posting-title-txtbox" 
 						value="<?php Input::get('title'); ?>" placeholder="<type title here>">
+						<!-- Input here is not doing anything unless we put it into the sticky forms -->
 				</div>
 				<div class="form-group">
 					<label for="price-static-label" class="col-sm-2">Price $</label>

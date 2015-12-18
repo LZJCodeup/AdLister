@@ -1,3 +1,83 @@
+<?php 
+    require_once '../database/adlister_db_config.php';
+    require_once '../database/db_connect.php';
+    require_once '../utils/Input.php';
+    require_once '../models/AdModel.php';
+
+    function processForm ($dbc)
+    {   
+        $errors = [];
+        $errors['count'] = 0;
+        $today = date("Y-m-d");  //pass this to be inserted into the database
+
+        //form was submitted when $_POST is not empty
+        if (!empty($_POST))
+        {
+            try {
+                $category = Input::getString('category');
+            } catch (Exception $e) {
+                $errors['category'] = 'Category: ' . $e->getMessage();
+                $errors['count']++;
+            }
+            try {
+                $postingTitle = Input::getString('title');
+            } catch (Exception $e) {
+                $errors['title'] = 'Posting Title: ' . $e->getMessage();
+                $errors['count']++;
+            }
+            try {
+                $price= Input::getNumber('price');
+            } catch (Exception $e) {
+                $errors['price'] = 'Price: ' . $e->getMessage();
+                $errors['count']++;
+            }
+            try {
+                $description = Input::getString('description');
+            } catch (Exception $e) {
+                $errors['description'] = 'Description: ' . $e->getMessage();
+                $errors['count']++;
+            }
+            try {
+                $date_posted = Input::getDate('date_posted');
+            } catch (Exception $e) {
+                $errors['date_posted'] = 'Date Posted: ' . $e->getMessage();
+                $errors['count']++;
+            }
+            if ($errors['count'] == 0)
+            {
+                $postImage = "http://placehold.it/350x300";
+                $adObject = new AdModel();
+                $adObject->category = $category;
+                $adObject->title = $postingTitle;
+                $adObject->price = $price;
+                $adObject->description = $description;
+                $adObject->image = $postImage;
+                $adObject->date_posted = $today;
+                // $adObject->user_id = $_SESSION['user_id'];
+                $adObject->users_id = 1;
+                $adObject->save();
+            } 
+        }
+        return $errors;
+    }
+
+    function pageController($dbc) {
+        session_start();
+        
+        $categorySelectionList = ['Cars', 'Boats', 'Trucks', 'Diesel Trucks'];
+        $errors = processForm($dbc);
+
+        return array (
+            'categorySelectionList' => $categorySelectionList,
+            'errorMessages' => $errors
+            );
+    }
+    extract(pageController($dbc));
+    var_dump ($_POST);
+    // var_dump($_REQUEST);
+    // var_dump ($errorMessages);
+?>
+
 <!doctype html>
 
 <html>
