@@ -119,5 +119,24 @@ class AdModel extends BaseModel {
         return self::getCategoryId($categoryName);
     }
 
+    /**
+     * returns a two dimensional array with one inner array representing one ad
+     */
+    public static function all()
+    {
+        self::dbConnect();
+
+        $myQuery = "SELECT ads.id, ads.title, ads.price, ads.description, ads.image,
+        ads.date_posted, c.category_name as 'category', u.email as 'user'
+        FROM ads
+        JOIN categories as c ON ads.category_id = c.id
+        JOIN users as u ON ads.users_id = u.id";
+
+        $stmt = self::$dbc->query($myQuery);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
 }
 
