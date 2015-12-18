@@ -1,13 +1,13 @@
 <?php
 
-require 'Log.php';
+// require 'Logger.php';
 
 class Auth
 {
     
     public static function attempt($user, $password)
     {
-        $log = new Log();
+        // $log = new Log();
 
         if(password_verify($password, $user->$password))
             { 

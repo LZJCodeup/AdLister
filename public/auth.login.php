@@ -1,29 +1,46 @@
 <?php
 // require_once 'bootstrap.php';
-//require_once 'input.php';
+require_once '../utils/input.php';
+require_once '../utils/Auth.php';
+require_once '../models/UserModel.php';
+require_once '../database/adlister_db_config.php';
 
 function pageController()
 {
   session_start();
   
-  if(isLoggedIn())
+  if(Auth::isLoggedIn())
   {
     header("Location: index.php");
     exit();
   }
-
-  $email =Input::getString('email');
-  $password=Input::getString('password');
-  $user = UserModel::findByEmail();
   
-  if(empty($user))
-  {
-   header("Location: user.create.php");
-    exit(); 
+  try {
+    $email = Input::getString('email');
+  } catch (Exception $e) {
+    $email = '';
   }
 
-  $attempt = Auth::attempt($user,$password);
+  try {
+    $password=Input::getString('password');
+  } catch (Exception $e) {
+    $password = '';
+  }
   
+  $user = UserModel::findByEmail($email);
+  
+  // if(empty($user))
+  // {
+  //  header("Location: users.create.php");
+  //   exit(); 
+  // }
+  $attempt = False;  
+  if(!empty($user))
+  {
+  $attempt = Auth::attempt($user,$password);  
+  }
+
+
   if($attempt)
   {
     Auth::setSessionVariables($user);
@@ -32,7 +49,8 @@ function pageController()
   } 
   return array(
     'email'   => $email,
-    'error'   => $error
+    'error'   => $error,
+    'loggedIn' => Auth::isLoggedIn()
   );
 }
 extract(pageController());
@@ -62,7 +80,7 @@ extract(pageController());
         <input type="email" id="inputEmail" class="form-control" name ="email" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control"  name="password" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign Up</button>
+        <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign In</button>
       </form>
         <?php if(!empty($error)) :?>
         <p><?= $error?></p>
