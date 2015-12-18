@@ -34,7 +34,6 @@ class AdModel extends BaseModel {
             foreach ($result as $key => $value) {
                 $instance->$key = $value;
             }
-            // $instance->attributes = $result;
         }
 
         return $instance;
