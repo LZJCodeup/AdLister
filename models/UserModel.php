@@ -22,6 +22,5 @@ class UserModel extends BaseModel {
             $ads[] = AdModel::find($adId[0]);
         }
         return $ads;
-
     }
 }
