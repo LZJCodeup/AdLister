@@ -156,5 +156,30 @@ class AdModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * takes a search string and returns a two dimensional array containing
+     * ad records whose title matches the query string
+     */
+    public static function search($search)
+    {
+        self::dbConnect();
+
+        $search = "%$search%";
+
+        $query = "SELECT ads.id, ads.title, ads.price, ads.description, ads.image,
+        ads.date_posted, c.category_name as 'category', u.email as 'user'
+        FROM ads
+        JOIN categories as c ON ads.category_id = c.id
+        JOIN users as u ON ads.users_id = u.id
+        WHERE ads.title LIKE :query";;
+
+        $stmt = self::$dbc->prepare($query);
+        $stmt->bindValue(':query', $search, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
 }
 
