@@ -7,13 +7,19 @@
 	function pageController(){
 		//initializes the session variable if none exists otherwise it resets it
 		session_start();
-		$adID = "";
 
-		if (!empty ($_GET['id']))
+		if (!empty($_GET['id']))
 		{
 			$adID = $_GET['id'];
+			$adObject = AdModel::find($adID);
 		}
-		$adObject = AdModel::find($adID);
+		
+		//the form containing only the submit button was submmited - user wants to edit the ad
+		if ((!empty($_POST)) && (!empty($_GET['id'])))
+		{
+			header("Location: /ads.edit.php?id=" . $adID);   //this will be the $_GET for the ads.edit.php
+			die();
+		}
 		
 		return array (
 			'adObject' => $adObject
@@ -72,6 +78,9 @@
 		      			<p class="form-control-static" id="static-postID"><?= $adObject->id ?></p>
 		    		</div>
 		    	</div>
+		    	<form method="POST">
+		    		<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Edit Ad</button>
+		    	</form>
     		</div>
     	</div>
 		<?php include '../views/partials/footer.php'; ?>
