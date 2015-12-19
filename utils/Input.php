@@ -70,7 +70,7 @@ class Input
         return $inputDateObject;
     }
 
-    public static function getString($key, $min = 1, $max = 50)
+    public static function getString($key, $min = 1, $max = 200000)
     {
         $inputValue = self::get($key);
         if (!is_string($inputValue))
@@ -89,7 +89,7 @@ class Input
         {   
             throw new LengthException ("The Supplied String Length Must Be Between 1 and 50 Characters!");
         }
-        if (($min < 1) || ($max > 50))
+        if (($min < 1) || ($max > 200000))
         {
             throw new RangeException ("Out of Range (Expecting A Number Between 1 and 50)!");
         }
