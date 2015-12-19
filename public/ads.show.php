@@ -1,30 +1,25 @@
 <?php 
 	require_once '../database/adlister_db_config.php';
 	require_once '../database/db_connect.php';
-	// require_once '../database/Input.php';
+	require_once '../models/AdModel.php';
+	require_once '../models/CategoryModel.php';
 
 	function pageController(){
+		//initializes the session variable if none exists otherwise it resets it
 		session_start();
-		
-		$postCategory = 'Cars';
-		$postTitle = 'Car For Sale - Great Condition - Must Sell Now!!!';
-		$postPrice = '$50,000';
-		$postImage = "http://placehold.it/350x300";
-		$postDescription = 'This car is in great conditon.  4-door, new tires, ...';
-		$postID = "13456456456";
+		$adID = "";
 
+		if (!empty ($_GET['id']))
+		{
+			$adID = $_GET['id'];
+		}
+		$adObject = AdModel::find($adID);
+		
 		return array (
-			'postCategory' => $postCategory,
-			'postTitle'  => $postTitle,
-			'postPrice' => $postPrice,
-			'postImage' => $postImage,
-			'postDescription' => $postDescription,
-			'postID' => $postID
+			'adObject' => $adObject
 			);
 	}
 	extract(pageController());
-	var_dump($_POST);
-	var_dump($_REQUEST);
 ?>
 
 <!DOCTYPE html>
@@ -45,39 +40,39 @@
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">View Ad</h1>
   		<div id="show-ad-frame" class="container-fluid">
-		   	<form name="ad-view-form" action="" class="form-horizontal">
+		   	<div class="form-horizontal">
 				<div class="form-group">
 					<label for="posting-title-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Title</label>
 					<div class="col-sm-10">
-		      			<p class="form-control-static" id="static-posting-title"><?= $postTitle ?></p>
+		      			<p class="form-control-static" id="static-posting-title"><?= $adObject->title ?></p>
 		    		</div>
 		    	</div>
 		    	<div class="form-group">
-					<label for="price-static-label" form="ad-view-form" class="col-sm-2 control-label">Price</label>
+					<label for="price-static-label" form="ad-view-form" class="col-sm-2 control-label">Price $</label>
 					<div class="col-sm-10">
-		      			<p class="form-control-static" id="static-price"><?= $postPrice ?></p>
+		      			<p class="form-control-static" id="static-price"><?= $adObject->price ?></p>
 		    		</div>
 		    	</div>
-		    	<br><img src="<?= $postImage ?>" class="img-responsive center-block" alt="Responsive image"><br>
+		    	<br><img src="<?= $adObject->image ?>" class="img-responsive center-block" alt="Responsive image"><br>
 		    	<div class="form-group">
 					<label for="posting-body-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Description</label>
 					<div class="col-sm-10">
-		      			<p class="form-control-static" id="static-post-description"><?= $postDescription ?></p>
+		      			<p class="form-control-static" id="static-post-description"><?= $adObject->description ?></p>
 		    		</div>
 		    	</div>
 		    	<div class="form-group">
 					<label for="category-static-label" form="ad-view-form" class="col-sm-2 control-label">Category</label>
 					<div class="col-sm-10">
-		      			<p class="form-control-static" id="static-category"><?= $postCategory ?></p>
+		      			<p class="form-control-static" id="static-category"><?= $adObject->category ?></p>
 		    		</div>
 		    	</div>
 		    	<div class="form-group">
 					<label for="postID-static-label" form="ad-view-form" class="col-sm-2 control-label">Post ID#</label>
 					<div class="col-sm-10">
-		      			<p class="form-control-static" id="static-postID"><?= $postID ?></p>
+		      			<p class="form-control-static" id="static-postID"><?= $adObject->id ?></p>
 		    		</div>
 		    	</div>
-    		</form>
+    		</div>
     	</div>
 		<?php include '../views/partials/footer.php'; ?>
 	</body>
