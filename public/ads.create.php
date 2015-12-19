@@ -3,6 +3,7 @@
 	require_once '../database/db_connect.php';
 	require_once '../utils/Input.php';
 	require_once '../models/AdModel.php';
+	require_once '../models/CategoryModel.php';
 
 	function processForm ($dbc)
 	{	
@@ -53,9 +54,11 @@
 				$adObject->description = $description;
 				$adObject->image = $postImage;
 				$adObject->date_posted = $today;
-				// $adObject->user_id = $_SESSION['user_id'];
+				// hardcoded:  $adObject->user_id = $_SESSION['user_id'];
 				$adObject->users_id = 1;
 				$adObject->save();
+				header("Location: /ads.show.php?id=" . $adObject->id); //this will be the $_GET for the ads.show.php
+				die();
 			} 
 		}
 		return $errors;
@@ -64,7 +67,11 @@
 	function pageController($dbc) {
 		session_start();
 		
-		$categorySelectionList = ['Cars', 'Boats', 'Trucks', 'Diesel Trucks'];
+		$arrayCategoriesArray = CategoryModel::all();
+		foreach ($arrayCategoriesArray as $categoriesArray)
+		{
+			$categorySelectionList[] = $categoriesArray['category_name'];
+		}
 		$errors = processForm($dbc);
 
 		return array (
@@ -73,9 +80,6 @@
 			);
 	}
 	extract(pageController($dbc));
-	var_dump ($_POST);
-	// var_dump($_REQUEST);
-	// var_dump ($errorMessages);
 ?>
 
 <!DOCTYPE html>
@@ -94,8 +98,8 @@
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Create Ad</h1>
         <div id="ad-create-frame" class="container-fluid">
-			<form method="POST" action="/ads.show.php">
-			<!-- <form method="POST"> -->
+			<!-- <form method="POST" action="/ads.show.php"> -->
+			<form method="POST">
 				<div class="form-group">
 					<label for="category-static-label" class="col-sm-2 control-label">Category</label>
 					<select name="category" class="form-control" id="category-dropdown-selector">
