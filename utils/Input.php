@@ -117,14 +117,46 @@ class Input
         return floatval($inputValue);
     }
 
-    // returns the password hashed
-    public static function getPassword($key)
+    // returns the password hashed if it meets the requirements
+    public static function getPassword($key, $firstName, $lastName, $email)
     {
-        // verifiy the password meets requirements - TODO
-        //six characters long
-        //combination of letters, numbers, and symbols
-        //lowercase and uppercase
-        //cannot contain your name, last name, or email
+        $inputValue = trim(self::get($key));
+        //password must be at least six characters long
+        if (strlen($inputValue) < 6)
+        {
+            throw new LengthException ("Length Must Be At Least 6 Characters Long!");
+        }
+        //passwords cannot contain the users first name, last name, or email
+        // The "i" after the pattern delimiter indicates a case-insensitive search
+        if (preg_match("/$firstName/i", $inputValue))
+        {
+            throw new LogicException ("Cannot Contain Your First Name!");
+        }
+        if (preg_match("/$lastName/i", $inputValue))
+        {
+            throw new LogicException ("Cannot Contain Your Last Name!");
+        }
+        if (preg_match("/$email/i", $inputValue))
+        {
+            throw new LogicException ("Cannot Contain Your Email!");
+        }
+        //password must contain one uppercase letter
+        if (!preg_match('/[A-Z]/',$inputValue))
+        {
+            throw new LogicException ("Must Contain One Uppercase Letter!");
+        }
+        //password must contain one lowercase letter
+        if (!preg_match('/[a-z]/',$inputValue))
+        {
+            throw new LogicException ("Must Contain One Lowercase Letter!");
+        }
+        //at this point we know the password contains an uppercase & lowercase letter
+        //now, ensure passowrd contains at least one number
+        if (!preg_match('/[0-9]/',$inputValue))
+        {
+            throw new LogicException ("Must Contain One Number!");
+        }
+        //last, ensure the password contains at least one symbol - needs implementation
         //hash the password
         return password_hash($key, PASSWORD_DEFAULT);
     }
