@@ -117,6 +117,60 @@ class Input
         return floatval($inputValue);
     }
 
+    // returns the password hashed
+    public static function getPassword($key)
+    {
+        // verifiy the password meets requirements - TODO
+        //six characters long
+        //combination of letters, numbers, and symbols
+        //lowercase and uppercase
+        //cannot contain your name, last name, or email
+        //hash the password
+        return password_hash($key, PASSWORD_DEFAULT);
+    }
+
+    public static function getImage()
+    {   //are the named exceptions that I am throwing ok???
+        $targetDirectory = "../public/uploads/";  //set the directory
+        $targetFile = $targetDirectory . basename($_FILES['fileToUpload']['name']);  //file to save
+        $imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION); //returns png, jpg, etc.
+
+        // Check if image file is a actual image or fake image; if fake throw an exception
+        if(isset($_POST['upload-image'])) {
+            $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
+            if($check === false) {
+                throw new UnexpectedValueException ("File Is Not An Image!");
+            }
+        }
+        //"File is an image - located under $check['mime']
+
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" )
+        {
+            throw new UnexpectedValueException ("Sorry, only JPG, JPEG, PNG & GIF files are allowed!");
+        }
+
+        // Check if file already exists
+        if (file_exists($targetFile))
+        {
+            throw new UnexpectedValueException ("Sorry, file already exists!");
+        }
+
+        // Check file size - 1000000 Bytes (1 MB)
+        if ($_FILES['fileToUpload']['size'] > 1000000)
+        {
+            throw new RangeException ("Sorry, your file is too large!");
+        }        
+    
+        if (!move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile))
+        {
+            throw new LogicException ("Sorry, there was an error uploading your file!");
+        }
+        // basename( $_FILES["fileToUpload"]["name"]) has been uploaded
+        //return $targetFile to get path
+        return ("/uploads/" . $_FILES['fileToUpload']['name']);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     //                      DO NOT EDIT ANYTHING BELOW!!                     //
