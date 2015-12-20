@@ -8,6 +8,7 @@
 		//initializes the session variable if none exists otherwise it resets it
 		session_start();
 
+		//a user id was passed to this page to display
 		if (!empty($_GET['id']))
 		{
 			$adID = $_GET['id'];
@@ -59,7 +60,7 @@
 		      			<p class="form-control-static" id="static-price"><?= $adObject->price ?></p>
 		    		</div>
 		    	</div>
-		    	<br><img src="<?= $adObject->image ?>" class="img-responsive center-block" alt="Responsive image"><br>
+		    	<br><img src="<?= "http://adlister.dev" . $adObject->image ?>" class="img-responsive center-block" alt="Responsive image"><br>
 		    	<div class="form-group">
 					<label for="posting-body-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Description</label>
 					<div class="col-sm-10">
