@@ -4,7 +4,7 @@
 	require_once '../utils/Input.php';
 	require_once '../models/AdModel.php';
 	
-	function processForm ($category, $datePosted)
+	function processForm ($adObject, $postImage)
 	{	
 		$errors = [];
 		$errors['count'] = 0;
@@ -31,17 +31,24 @@
 			}
 			if ($errors['count'] == 0)
 			{	//update the database
-				$adObject = new AdModel();
+				// $adObject = new AdModel();
 				$adObject->title = $postingTitle;
 				$adObject->price = $price;
 				$adObject->description = $description;
 				$adObject->id = $_GET['id'];
-				$adObject->image = "http://placehold.it/350x300"; //this is hardcoded for now;
-				$adObject->date_posted = $datePosted;
-				$adObject->category = $category;
+				if ($postImage == "Database Image")
+				{	//no image was uploaded - use the database image
+					$adObject->image = $adObject->image;
+				} else { //new image uploaded - use new image
+					$adObject->image = $postImage;
+				}
+				var_dump("adObject image: " . $adObject->image . "!");
+				$adObject->date_posted = $adObject->date_posted;
+				$adObject->category = $adObject->category;
 				// hardcoded:  $adObject->user_id = $_SESSION['user_id'];
 				$adObject->users_id = 1;		//this is hardcoded for now
 				$adObject->save();
+				unset($_SESSION['image']);
 				header("Location: /ads.show.php?id=" . $adObject->id); //this will be the $_GET for the ads.show.php
 				die();
 			} 
@@ -51,13 +58,49 @@
 
 	function pageController(){
 		session_start();
+		$errors['count'] = 0;
 
 		if (!empty($_GET['id']))
 		{
 			$adID = $_GET['id'];
 			$adObject = AdModel::find($adID);
 		}
-		$errors = processForm($adObject->category, $adObject->date_posted);
+		$imageSuccessMessage = "";
+		//if an image was submitted - validate it even before validating the rest of the form
+		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] != ''))
+		{
+			try {
+				$postImage = Input::getImage();
+				//image was successfully uploaded
+				$imageSuccessMessage = "Image: " . basename( $_FILES['fileToUpload']['name']) . " has been uploaded!";
+				//store image in the session
+				$_SESSION['image'] = $postImage;
+			} catch (Exception $e) {
+				$errors['image'] = 'Image: ' . $e->getMessage();
+				$errors['count']++;
+			}
+		}
+		//clicked on the upload image button without selecting a photo
+		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] == ''))
+		{
+			$errors['image'] = "Image:  Select an image to upload!";
+			$errors['count']++;
+		}
+		
+		//an image has been submitted; use the image stored in the $_SESSION
+		if (isset($_SESSION['image']))
+		{
+			$postImage = $_SESSION['image'];
+		} else {
+			//use the image stored in the database
+			$postImage = "Database Image";
+		}
+		//if there weren't any errors with the image; then, process then rest of the form
+		if ($errors['count'] == 0) 
+		{
+			$errors = processForm($adObject, $postImage);
+			// $errors = processForm($adObject->category, $adObject->date_posted, $postImage);
+		}
 		
 		return array (
 			'adObject' => $adObject,
@@ -104,12 +147,25 @@
 					<textarea class="form-control" name="description" rows="10" id="posting-body-txtbox"><?=$adObject->description; ?></textarea>
 				</div>	
 				<div class="form-group">
+					<label for="posting-image-static-label" class="col-sm-2">Image</label><br>
+					<input class="form-control" type="text" placeholder="<?= $adObject->image; ?>" readonly>
+				</div>	
+				<div class="form-group">
 					<label for="postID-static-label" class="col-sm-2 control-label">Post ID#</label>
 					<input class="form-control" type="text" placeholder="<?= $adObject->id; ?>" readonly>
 				</div>
-				<button type="button" name="upload-img" id="upload-img" id="center-block" value="upload-img" class="btn btn-default
-					 btn-lg">Upload Image</button>
+				<?php if($errorMessages['count'] != 0) : ?>
+					<?php foreach ($errorMessages as $error) : ?>
+						<?= $error; ?>
+					<?php endforeach; ?>
+				<?php endif ?><br>
 				<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg">Submit Changes</button>
+			</form>
+			<form method="POST" enctype="multipart/form-data">
+				<br>
+				Select image to upload:
+				<input type="file" name="fileToUpload" id="fileToUpload">
+				<input type="submit" value="Upload Image" name="upload-image" class="btn btn-default btn-lg">
 			</form>
       	</div>
 
