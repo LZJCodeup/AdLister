@@ -2,11 +2,15 @@
 	require_once '../database/adlister_db_config.php';
 	require_once '../database/db_connect.php';
 	require_once '../utils/Input.php';
+	require_once '../models/AdModel.php';
+	require_once '../models/CategoryModel.php';
 
-	function processForm ($dbc)
+	function processForm ($postImage)
 	{	
 		$errors = [];
 		$errors['count'] = 0;
+		$today = date("Y-m-d");  //pass this to be inserted into the database
+
 		//form was submitted when $_POST is not empty
 		if (!empty($_POST))
 		{
@@ -42,30 +46,81 @@
 			}
 			if ($errors['count'] == 0)
 			{
-				// $message = insertPost(trim($category), trim($postingTitle), trim($price), trim($description), $date_posted->format('Y-m-d'), $dbc);
-				//user_id can be obtained from the session
-				// $errors['successful'] = $message;
+				$adObject = new AdModel();
+				$adObject->category = $category;
+				$adObject->title = $postingTitle;
+				$adObject->price = $price;
+				$adObject->description = $description;
+				var_dump($postImage);
+				$adObject->image = $postImage;
+				$adObject->date_posted = $today;
+				// hardcoded:  $adObject->user_id = $_SESSION['user_id'];
+				$adObject->users_id = 1;
+				$adObject->save();
+				//unset the $_SESSION['image'] - will be using the one in the database
+				unset($_SESSION['image']);
+				header("Location: /ads.show.php?id=" . $adObject->id); //this will be the $_GET for the ads.show.php
+				die();
 			} 
 		}
 		return $errors;
 	}
 
-	function pageController($dbc) {
+	function pageController() {
 		session_start();
+		$errors['count'] = 0;
 		
-		$categorySelectionList = ['Cars', 'Boats', 'Trucks', 'Diesel Trucks'];
-		$today = date("Y-m-d");  //pass this to be inserted into the database
-		$errors = processForm($dbc);
+		$arrayCategoriesArray = CategoryModel::all();
+		foreach ($arrayCategoriesArray as $categoriesArray)
+		{
+			$categorySelectionList[] = $categoriesArray['category_name'];
+		}
 
+		$imageSuccessMessage = "";
+		//if an image was submitted - validate it even before validating the rest of the form
+		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] != ''))
+		{
+			try {
+				$postImage = Input::getImage();
+				//image was successfully uploaded
+				$imageSuccessMessage = "Image: " . basename( $_FILES['fileToUpload']['name']) . " has been uploaded!";
+				//store image in the session
+				$_SESSION['image'] = $postImage;
+			} catch (Exception $e) {
+				$errors['image'] = 'Image: ' . $e->getMessage();
+				$errors['count']++;
+			}
+		}
+		//clicked on the upload image button without selecting a photo
+		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] == ''))
+		{
+			$errors['image'] = "Image:  Select an image to upload!";
+			$errors['count']++;
+		}
+
+		//if the session['image'] is empty; then, no image was submitted
+		if (!isset($_SESSION['image']))
+		{
+		//no image was submitted - use placeholder image
+		 	$postImage = "http://placehold.it/350x300";
+		} else {
+			//an image has been submitted; use the image stored in the $_SESSION
+			$postImage = $_SESSION['image'];
+		}
+		//if there weren't any errors with the image; then, process then rest of the form
+		if ($errors['count'] == 0) 
+		{
+			$errors = processForm($postImage);
+		}
+		
 		return array (
 			'categorySelectionList' => $categorySelectionList,
-			'errorMessages' => $errors
+			'errorMessages' => $errors,
+			'imageSuccessMessage' => $imageSuccessMessage
 			);
 	}
-	extract(pageController($dbc));
-	var_dump ($_POST);
-	var_dump($_REQUEST);
-	// var_dump ($errorMessages);
+	extract(pageController());
+	var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -84,16 +139,15 @@
 		<?php include '../views/partials/navbar.php'; ?>
 		<h1 class="text-center">Create Ad</h1>
         <div id="ad-create-frame" class="container-fluid">
-			<!-- <form method="POST" action="/ads.show.php"> -->
 			<form method="POST">
 				<div class="form-group">
 					<label for="category-static-label" class="col-sm-2 control-label">Category</label>
 					<select name="category" class="form-control" id="category-dropdown-selector">
-  						<?php foreach ($categorySelectionList as $index => $selection): ?>
+  						<?php foreach ($categorySelectionList as $selection): ?>
   							<?php if($selection == Input::get('category')) : ?>
-								<option selected value="<?= $index; ?>"><?= $selection; ?> </option>
+								<option selected value="<?= $selection; ?>"><?= $selection; ?> </option>
 							<?php else : ?>
-								<option value="<?= $index ?>"><?= $selection; ?> </option>
+								<option value="<?= $selection ?>"><?= $selection; ?> </option>
 							<?php endif; ?>
   						<?php endforeach ?>
 					</select>
@@ -102,6 +156,7 @@
 					<label for="posting-title-static-label" class="col-sm-2 control-label">Posting Title</label>
 					<input type="text" name="title" class="form-control" id="posting-title-txtbox" 
 						value="<?php Input::get('title'); ?>" placeholder="<type title here>">
+						<!-- Input here is not doing anything unless we put it into the sticky forms -->
 				</div>
 				<div class="form-group">
 					<label for="price-static-label" class="col-sm-2">Price $</label>
@@ -118,9 +173,14 @@
 						<?= $error; ?>
 					<?php endforeach; ?>
 				<?php endif ?><br>
-				<button type="button" name="upload-img" id="upload-img" value="upload-img" class="btn btn-default 
-					btn-lg btn-center">Upload Image</button>
-				<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Submit</button>
+				<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Submit</button><br>
+			</form>
+			<form method="POST" enctype="multipart/form-data">
+				<br>
+				Select image to upload:
+				<input type="file" name="fileToUpload" id="fileToUpload">
+				<input type="submit" value="Upload Image" name="upload-image" class="btn btn-default btn-lg">
+				<?= $imageSuccessMessage; ?>
 			</form>
       	</div>
 		<?php include '../views/partials/footer.php'; ?>
