@@ -1,15 +1,37 @@
-<?php 
+<?php
 
-$email = 'guest@g.com';
-$firstName = 'Guest';
-$lastName = 'Doe';
-$password = '*********';
+// require_once 'bootstrap.php';
+// require_once '../models/BaseModel.php';
+// require_once '../models/UserModel.php';
+// require_once '../models/AdModel.php';
+// require_once '../models/CategoryModel.php';
 
-$firstItem = 'MacBook';
-$secondItem = 'PHP coding';
-$thirdItem = 'Magic Mouse';
+function pageController()
+{
+  session_start();
 
+  if (!isset($_SESSION['IS_LOGGED_IN']) && (!$_SESSION['IS_LOGGED_IN'])) {
+    header("Location: index.php");
+    exit();
+  }
+  
+  // $id = $_SESSION['user_id'];
 
+  $email = 'g@g.com';                             //$_SESSION[$email];
+  $firstName = 'Guest';                            //$_SESSION[$firstName];
+  $lastName = 'Guest';                             //$_SESSION[$lastName];
+
+  // $userposts= "select $title from ads where $id = user_id";
+  
+ 
+  return array(
+  'email'    => $email,
+  'firstName'   => $firstName,
+  'lastName' => $lastName,
+  'loggedIn' => True
+  );
+}
+extract(pageController());
 ?>
 
 <!doctype html>
@@ -35,7 +57,7 @@ $thirdItem = 'Magic Mouse';
             <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $firstName?></li>
             <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $lastName?></li>
             <li class="list-group-item text-right"><span class="pull-left">email address</span><?= $email?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Password</span><?= $password?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Password</span>********</li>
             <li class="list-group-item text-right">
               <a class="btn btn-med btn-primary" href="users.edit.php" type="submit">Edit Profile</a>
             </li>
@@ -43,17 +65,17 @@ $thirdItem = 'Magic Mouse';
       <br>
       <h2>Your Ads</h2>
       <ul class = "list-group">
-            <li class="list-group-item text-right"><span class="pull-left"><?= $firstItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left">First Item</span> 
               <input type="hidden" name="Ads1" value="ad1">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left"><?= $secondItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left">Second Item</span> 
               <input type="hidden" name="Ads2" value="ad2">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left"><?= $thirdItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left">ThirdItem</span> 
               <input type="hidden" name="Ads3" value="ad3">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
