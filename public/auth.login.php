@@ -1,9 +1,5 @@
 <?php
-// require_once 'bootstrap.php';
-require_once '../utils/input.php';
-require_once '../utils/Auth.php';
-require_once '../models/UserModel.php';
-require_once '../database/adlister_db_config.php';
+require_once 'bootstrap.php';
 
 function pageController()
 {
