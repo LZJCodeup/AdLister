@@ -2,6 +2,7 @@
 
 require_once '../models/AdModel.php';
 require_once '../utils/Input.php';
+require_once '../utils/Auth.php';
 
 function pageController()
 {
