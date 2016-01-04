@@ -34,22 +34,13 @@ function pageController()
   //  header("Location: users.create.php");
   //   exit(); 
   // }
-  $attempt = False;  
-  if(!empty($user))
-  {
-  $attempt = Auth::attempt($user,$password);  
-  }
 
-
-  if($attempt)
+  if(Auth::attempt($user,$password))
   {
     Auth::setSessionVariables($user);
-  } else {
-    $error = 'Login Failed';
   } 
   return array(
     'email'   => $email,
-    'error'   => $error,
     'loggedIn' => Auth::isLoggedIn()
   );
 }
@@ -82,8 +73,8 @@ extract(pageController());
         <input type="password" id="inputPassword" class="form-control"  name="password" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign In</button>
       </form>
-        <?php if(!empty($error)) :?>
-        <p><?= $error?></p>
+        <?php if(!empty($_POST)) :?>
+        <p>Login Failed</p>
         <?php endif; ?>
     </div> <!-- /container -->
 <?php include '../views/partials/footer.php'; ?>

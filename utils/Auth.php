@@ -21,7 +21,7 @@ class Auth
     public static function setSessionVariables($user)
     {
         $_SESSION['user_id']= $user->id;
-        $_SESSION['email']= $User->email;
+        $_SESSION['email']= $user->email;
         $_SESSION['firstName']= $user->firstName;
         $_SESSION['lastName']= $user->lastName;
     }
@@ -32,7 +32,7 @@ class Auth
      */    
     public static function isLoggedIn()
     {
-        return isset($_SESSION['id']);
+        return isset($_SESSION['user_id']);
     }
 
     /**
@@ -42,7 +42,7 @@ class Auth
      */
     public static function getUsername()
     {
-        return $_SESSION['LOGGED_IN_USER'];
+        return $_SESSION['email'];
     }
 
     /**
@@ -51,8 +51,8 @@ class Auth
      */
     public static function logout()
     {
-        $log = new Log();
-        $log->info(self::getUsername() . ' logged out');
+       // $log = new Log();
+        //$log->info(self::getUsername() . ' logged out');
 
         // Unset all of the session variables.
         $_SESSION = array();
