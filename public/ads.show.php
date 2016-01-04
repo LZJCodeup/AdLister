@@ -24,7 +24,7 @@
 		
 		return array (
 			'adObject' => $adObject
-			);
+		);
 	}
 	extract(pageController());
 ?>
