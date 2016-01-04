@@ -6,7 +6,7 @@ class Auth
     public static function attempt($user, $password)
     {
         // $log = new Log();
-        var_dump(is_object($user));
+        //var_dump(is_object($user));
         if(is_object($user) && password_verify($password, $user->password))
             { 
                 return True;
