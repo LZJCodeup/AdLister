@@ -8,14 +8,15 @@ class Auth
     public static function attempt($user, $password)
     {
         // $log = new Log();
-
-        if(password_verify($password, $user->$password))
+        var_dump(is_object($user));
+        if(is_object($user) && password_verify($password, $user->password))
             { 
                 return True;
             } else {
                 return False; 
             }
     }
+
     // Sets session variables
     
     public static function setSessionVariables($user)
