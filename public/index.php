@@ -1,7 +1,6 @@
 <?php 
 
-require_once '../models/AdModel.php';
-require_once '../utils/Auth.php';
+require_once '../bootstrap.php';
 
 function pageController()
 {
@@ -15,12 +14,8 @@ function pageController()
         return $ad;
     }, $ads);
 
-    // down in the body of the html we would replace this with a call to Auth::loggedIn()
-    $loggedIn = true;
-
     return [
-        'ads' => $ads,
-        'loggedIn' => $loggedIn
+        'ads' => $ads
     ];
 }
 

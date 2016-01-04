@@ -1,13 +1,9 @@
 <?php 
 
-require_once '../models/AdModel.php';
-require_once '../utils/Input.php';
-require_once '../utils/Auth.php';
+require_once '../bootstrap.php';
 
 function pageController()
 {
-    $loggedIn = false;
-
     try {
         $query = Input::getString('query');
     } catch (Exception $e) {
@@ -32,8 +28,7 @@ function pageController()
     }, $ads);
 
     return [
-        'ads' => $ads,
-        'loggedIn' => $loggedIn
+        'ads' => $ads
     ];
 }
 
