@@ -21,10 +21,16 @@
     );
   }
 
-$firstItem = 'MacBook';
-$secondItem = 'PHP coding';
-$thirdItem = 'Magic Mouse';
+function pageController()
+{
+  session_start();
 
+  if (!isset($_SESSION['IS_LOGGED_IN']) && (!$_SESSION['IS_LOGGED_IN'])) {
+    header("Location: index.php");
+    exit();
+  }
+  
+  // $id = $_SESSION['user_id'];
 
   extract(pageController());
   var_dump($userAds);
@@ -65,12 +71,12 @@ $thirdItem = 'Magic Mouse';
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left"><?= $secondItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left">Second Item</span> 
               <input type="hidden" name="Ads2" value="ad2">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
             </li>
-            <li class="list-group-item text-right"><span class="pull-left"><?= $thirdItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left">ThirdItem</span> 
               <input type="hidden" name="Ads3" value="ad3">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>

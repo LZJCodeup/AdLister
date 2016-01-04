@@ -1,36 +1,29 @@
 <?php
 
-require 'Log.php';
-
 class Auth
 {
-    public static $password = '$2y$10$SLjwBwdOVvnMgWxvTI4Gb.YVcmDlPTpQystHMO2Kfyi/DS8rgA0Fm';
-    public static $username = 'guest';
-
-    /**
-     * Takes a username and password, if the username is 'guest' and the
-     * password matches the hashed password, sets the LOGGED_IN_USER session
-     * variable and logs an info message that the user logged in 
-     * if the username and password do not match, logs an error
-     * 
-     * @param  string $username username
-     * @param  string $password password
-     */
-    public static function attempt($username, $password)
+    
+    public static function attempt($user, $password)
     {
-        $log = new Log();
-
-        $passwordIsValid = password_verify($password, self::$password);
-        $usernameIsValid = ($username == self::$username);
-
-        if ($usernameIsValid && $passwordIsValid) {
-            $_SESSION['LOGGED_IN_USER'] = $username;
-            $log->info($username . ' logged in.');
-        } elseif ($username != '') {
-            $log->error($username . ' failed to login!');
-        }
+        // $log = new Log();
+        //var_dump(is_object($user));
+        if(is_object($user) && password_verify($password, $user->password))
+            { 
+                return True;
+            } else {
+                return False; 
+            }
     }
 
+    // Sets session variables
+    
+    public static function setSessionVariables($user)
+    {
+        $_SESSION['user_id']= $user->id;
+        $_SESSION['email']= $user->email;
+        $_SESSION['firstName']= $user->firstName;
+        $_SESSION['lastName']= $user->lastName;
+    }
     /**
      * returns a boolean whether or not the user is logged in
      * 
@@ -38,7 +31,7 @@ class Auth
      */    
     public static function isLoggedIn()
     {
-        return isset($_SESSION['LOGGED_IN_USER']);
+        return isset($_SESSION['user_id']);
     }
 
     /**
@@ -48,7 +41,7 @@ class Auth
      */
     public static function getUsername()
     {
-        return $_SESSION['LOGGED_IN_USER'];
+        return $_SESSION['email'];
     }
 
     /**
@@ -57,8 +50,8 @@ class Auth
      */
     public static function logout()
     {
-        $log = new Log();
-        $log->info(self::getUsername() . ' logged out');
+       // $log = new Log();
+        //$log->info(self::getUsername() . ' logged out');
 
         // Unset all of the session variables.
         $_SESSION = array();

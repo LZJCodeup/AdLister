@@ -1,24 +1,44 @@
 <?php
+require_once '../bootstrap.php';
+
 function pageController()
 {
-  session_start();
   
-  if (isset($_SESSION['IS_LOGGED_IN']) && ($_SESSION['IS_LOGGED_IN'])) {
-    header("Location: users.show.php");
+  if(Auth::isLoggedIn())
+  {
+    header("Location: index.php");
+    exit();
   }
-  //$user = USER::findUser($email);
-  $email = isset($_POST['email']) ? htmlspecialchars(strip_tags($_POST['email'])) : '';
-  $password = isset($_POST['password']) ? htmlspecialchars(strip_tags($_POST['password'])) : '';
-    
-    if(($email == "guest@g.com") && ($password == "password")){
-     $_SESSION['LOGGED_IN_USER'] = $name;
-     $_SESSION['IS_LOGGED_IN'] = true;
-     header("Location: users.show.php");
+  
+  try {
+    $email = Input::getString('email');
+  } catch (Exception $e) {
+    $email = '';
   }
 
+  try {
+    $password=Input::getString('password');
+  } catch (Exception $e) {
+    $password = '';
+  }
+  
+  $user = UserModel::findByEmail($email);
+  
+  // if(empty($user))
+  // {
+  //  header("Location: users.create.php");
+  //   exit(); 
+  // }
+
+  if(Auth::attempt($user,$password))
+  {
+    Auth::setSessionVariables($user);
+    header("Location: index.php");
+    exit();
+  } 
   return array(
-  'email'    => $email,
-  'password'  => $password
+    'email'   => $email,
+    'loggedIn' => Auth::isLoggedIn()
   );
 }
 extract(pageController());
@@ -48,18 +68,11 @@ extract(pageController());
         <input type="email" id="inputEmail" class="form-control" name ="email" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control"  name="password" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign Up</button>
+        <button class="btn btn-lg btn-primary btn-block" href="users.show.php" type="submit">Sign In</button>
       </form>
-      <?php if($_POST):?>
-        <?php if(($email != "guest@g.com") || ($email != '')) :?>
-        <p>LOGIN Failed</p>
+        <?php if(!empty($_POST)) :?>
+        <p>Login Failed</p>
         <?php endif; ?>
-      <?php endif; ?>
     </div> <!-- /container -->
 <?php include '../views/partials/footer.php'; ?>
 </body>

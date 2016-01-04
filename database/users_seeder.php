@@ -9,9 +9,12 @@ $deleteTableContents = 'TRUNCATE users';
 $dbc->exec($deleteTableContents);
 
 $allUsers = [
-    ['email' => 'letty@codeup.com', 'first_name' => 'Letty', 'last_name' => 'Fuentes', 'password' => 'fuentes'],
-    ['email' => 'zach@codeup.com', 'first_name' => 'Zack', 'last_name' => 'Gulde', 'password' => 'gulde'],
-    ['email' => 'jerald@codeup.com', 'first_name' => 'Jerald', 'last_name' => 'Saenz', 'password' => 'saenz']
+    ['email' => 'letty@codeup.com', 'first_name' => 'Letty', 'last_name' => 'Fuentes',
+     'password' => password_hash('fuentes', PASSWORD_DEFAULT) ],
+    ['email' => 'zach@codeup.com', 'first_name' => 'Zack', 'last_name' => 'Gulde',
+     'password' => password_hash('gulde', PASSWORD_DEFAULT)],
+    ['email' => 'jerald@codeup.com', 'first_name' => 'Jerald', 'last_name' => 'Saenz',
+     'password' => password_hash('saenz', PASSWORD_DEFAULT)]
 ];
 
 $stmt = $dbc->prepare('INSERT INTO users (email, first_name, last_name, password)
