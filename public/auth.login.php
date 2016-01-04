@@ -3,7 +3,6 @@ require_once '../bootstrap.php';
 
 function pageController()
 {
-  session_start();
   
   if(Auth::isLoggedIn())
   {
