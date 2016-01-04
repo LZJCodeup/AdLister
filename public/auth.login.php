@@ -34,6 +34,8 @@ function pageController()
   if(Auth::attempt($user,$password))
   {
     Auth::setSessionVariables($user);
+    header("Location: index.php");
+    exit();
   } 
   return array(
     'email'   => $email,
