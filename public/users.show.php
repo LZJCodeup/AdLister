@@ -1,19 +1,36 @@
 <?php 
+  require_once '../database/adlister_db_config.php';
+  require_once '../database/db_connect.php';
+  require_once '../models/UserModel.php';
 
-$email = 'guest@g.com';
-$firstName = 'Guest';
-$lastName = 'Doe';
-$password = '*********';
+  function pageController(){
+    //initializes the session variable if none exists otherwise it resets it
+    session_start();
+
+    //a user id was passed to this page to display
+    if (!empty($_GET['id']))
+    {
+      $userID = $_GET['id'];
+      $userObject = UserModel::find($userID);
+      $userAds = $userObject->getAds();
+    }
+    
+    return array (
+      'userObject' => $userObject,
+      'userAds' => $userAds
+    );
+  }
 
 $firstItem = 'MacBook';
 $secondItem = 'PHP coding';
 $thirdItem = 'Magic Mouse';
 
 
+  extract(pageController());
+  var_dump($userAds);
 ?>
 
 <!doctype html>
-
 <html>
 <head>
 	<meta charset="utf-8">
@@ -32,18 +49,18 @@ $thirdItem = 'Magic Mouse';
       <ul class="list-group">
             <!-- <li class="list-group-item text-right"><span class="pull-left">Joined</span> 12.15.2015</li>
             <li class="list-group-item text-right"><span class="pull-left">Last Login</span> Yesterday</li> -->
-            <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $firstName?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $lastName?></li>
-            <li class="list-group-item text-right"><span class="pull-left">email address</span><?= $email?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Password</span><?= $password?></li>
+            <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $userObject->first_name ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $userObject->last_name ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Email address</span><?= $userObject->email ?></li>
             <li class="list-group-item text-right">
               <a class="btn btn-med btn-primary" href="users.edit.php" type="submit">Edit Profile</a>
             </li>
       </ul> 
       <br>
+      <!-- if user has ads then show below -->
       <h2>Your Ads</h2>
       <ul class = "list-group">
-            <li class="list-group-item text-right"><span class="pull-left"><?= $firstItem?></span> 
+            <li class="list-group-item text-right"><span class="pull-left"><?= $firstItem ?></span> 
               <input type="hidden" name="Ads1" value="ad1">
               <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
               <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
