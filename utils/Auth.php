@@ -1,7 +1,5 @@
 <?php
 
-// require 'Logger.php';
-
 class Auth
 {
     
