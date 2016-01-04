@@ -1,8 +1,5 @@
 <?php 
-    require_once '../database/adlister_db_config.php';
-    require_once '../database/db_connect.php';
-    require_once '../utils/Input.php';
-    require_once '../models/UserModel.php';
+    require_once '../bootstrap.php';
 
     function processForm ()
     {   
@@ -31,12 +28,6 @@
                 $errors['count']++;
             }
             try {
-                $username = Input::getString('username');
-            } catch (Exception $e) {
-                $errors['username'] = 'Username: ' . $e->getMessage();
-                $errors['count']++;
-            }
-            try {
                 if ($_POST['password1'] != $_POST['password2'])
                 {
                     throw new UnexpectedValueException ("Do Not Match!");
@@ -62,17 +53,16 @@
     }
 
     function pageController() {
-        session_start();
-        
         $errors = processForm();
+
+        var_dump($errors);
+        var_dump($_POST);
 
         return array (
             'errorMessages' => $errors
-            );
+        );
     }
     extract(pageController());
-    var_dump ($_POST);
-    var_dump ($errorMessages);
 ?>
 
 <!doctype html>
@@ -97,32 +87,27 @@
         <div class = "form-group">
             <label for="inputName">First Name</label>
             <input type="text" name="first_name" class="form-control" placeholder="First Name" 
-                value="<?php Input::get('first_name'); ?>" required autofocus>
+                value="<?= Input::get('first_name'); ?>" required autofocus>
         </div>
         <div class = "form-group">
             <label for="inputName">Last Name</label>
             <input type="text" name="last_name" class="form-control" placeholder="Last Name" 
-                value="<?php Input::get('last_name'); ?>" required>
+                value="<?= Input::get('last_name'); ?>" required>
         </div>
         <div class = "form-group">
             <label for="inputEmail">Email address</label>
             <input type="email" name="email" class="form-control" placeholder="Email address"
-                value="<?php Input::get('email'); ?>" required>
-        </div>
-        <div class = "form-group">
-            <label for="inputUserName">Username</label>
-            <input type="text" name="username" class="form-control" placeholder="Username"
-                value="<?php Input::get('username'); ?>" required>
+                value="<?= Input::get('email'); ?>" required>
         </div>
         <div class = "form-group">
             <label for="inputPassword">Password</label>
             <input type="password" name="password1" class="form-control" placeholder="Password"
-                value="<?php Input::get('password1'); ?>" required>
+                value="<?= Input::get('password1'); ?>" required>
         </div>
         <div class = "form-group">
             <label for="inputPasswordAgain">Retype Password</label>
             <input type="password" name="password2" class="form-control" placeholder="Retype Password"
-                value="<?php Input::get('password2'); ?>" required>
+                value="<?= Input::get('password2'); ?>" required>
         </div>
         <button type="submit" name="submit" id="submit" value="submit" class="btn btn-success btn-lg btn-block">Sign Up</button>
       </form>
