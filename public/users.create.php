@@ -55,9 +55,6 @@
     function pageController() {
         $errors = processForm();
 
-        var_dump($errors);
-        var_dump($_POST);
-
         return array (
             'errorMessages' => $errors
         );
