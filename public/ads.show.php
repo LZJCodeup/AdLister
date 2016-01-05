@@ -23,6 +23,7 @@
 		);
 	}
 	extract(pageController());
+	var_dump($adObject);
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +57,7 @@
 		      			<p class="form-control-static" id="static-price"><?= $adObject->price ?></p>
 		    		</div>
 		    	</div>
-		    	<br><img src="<?= "http://adlister.dev" . $adObject->image ?>" class="img-responsive center-block" alt="Responsive image"><br>
+		    	<br><img src="<?= $adObject->image ?>" class="img-responsive center-block" alt="Responsive image"><br>
 		    	<div class="form-group">
 					<label for="posting-body-static-label" form="ad-view-form" class="col-sm-2 control-label">Posting Description</label>
 					<div class="col-sm-10">
@@ -75,9 +76,7 @@
 		      			<p class="form-control-static" id="static-postID"><?= $adObject->id ?></p>
 		    		</div>
 		    	</div>
-		    	<form method="POST">
-		    		<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Edit Ad</button>
-		    	</form>
+
     		</div>
     	</div>
 		<?php include '../views/partials/footer.php'; ?>
