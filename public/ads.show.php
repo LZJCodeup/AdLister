@@ -19,10 +19,11 @@
 		}
 		
 		return array (
-			'adObject' => $adObject
+			'adObject' => $adObject,
 		);
 	}
 	extract(pageController());
+	var_dump($adObject);
 ?>
 
 <!DOCTYPE html>
@@ -75,9 +76,7 @@
 		      			<p class="form-control-static" id="static-postID"><?= $adObject->id ?></p>
 		    		</div>
 		    	</div>
-		    	<form method="POST">
-		    		<button type="submit" name="submit" id="submit" value="submit" class="btn btn-default btn-lg btn-center">Edit Ad</button>
-		    	</form>
+
     		</div>
     	</div>
 		<?php include '../views/partials/footer.php'; ?>
