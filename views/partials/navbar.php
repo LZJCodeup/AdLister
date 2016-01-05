@@ -5,7 +5,7 @@
             <li><a href="/ads.index.php">Browse</a></li>
             <?php if (Auth::isloggedIn()): ?>
                 <li><a href="/auth.logout.php">Log Out</a></li>
-                <li><a href="/users.show.php">Profile</a></li>
+                <li><a href="/users.show.php?id=<?= $_SESSION['user_id']; ?>">Profile</a></li>
             <?php else: ?>
                 <li><a href="/auth.login.php">Login</a></li>
                 <li><a href="/users.create.php">Sign Up</a></li>
