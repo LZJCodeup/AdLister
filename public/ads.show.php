@@ -1,12 +1,8 @@
 <?php 
-	require_once '../database/adlister_db_config.php';
-	require_once '../database/db_connect.php';
-	require_once '../models/AdModel.php';
-	require_once '../models/CategoryModel.php';
+	require_once '../bootstrap.php';
 
 	function pageController(){
 		//initializes the session variable if none exists otherwise it resets it
-		session_start();
 
 		//a user id was passed to this page to display
 		if (!empty($_GET['id']))
@@ -24,7 +20,7 @@
 		
 		return array (
 			'adObject' => $adObject
-			);
+		);
 	}
 	extract(pageController());
 ?>

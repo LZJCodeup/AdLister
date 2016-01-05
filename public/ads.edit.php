@@ -1,8 +1,6 @@
 <?php 
-	require_once '../database/adlister_db_config.php';
-	require_once '../database/db_connect.php';
-	require_once '../utils/Input.php';
-	require_once '../models/AdModel.php';
+	 require_once '../bootstrap.php';
+
 	
 	function processForm ($adObject, $postImage)
 	{	
@@ -57,7 +55,6 @@
 	}
 
 	function pageController(){
-		session_start();
 		$errors['count'] = 0;
 
 		if (!empty($_GET['id']))

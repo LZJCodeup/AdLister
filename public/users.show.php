@@ -1,41 +1,27 @@
-<?php
+<?php 
+  require_once '../bootstrap.php';
 
-// require_once 'bootstrap.php';
-// require_once '../models/BaseModel.php';
-// require_once '../models/UserModel.php';
-// require_once '../models/AdModel.php';
-// require_once '../models/CategoryModel.php';
+  function pageController(){
+    //initializes the session variable if none exists otherwise it resets it
 
-function pageController()
-{
-  session_start();
-
-  if (!isset($_SESSION['IS_LOGGED_IN']) && (!$_SESSION['IS_LOGGED_IN'])) {
-    header("Location: index.php");
-    exit();
+    //a user id was passed to this page to display
+    if (!empty($_GET['id']))
+    {
+      $userID = $_GET['id'];
+      $userObject = UserModel::find($userID);
+      $userAds = $userObject->getAds();
+    }
+    
+    return array (
+      'userObject' => $userObject,
+      'userAds' => $userAds,
+    );
   }
-  
-  // $id = $_SESSION['user_id'];
 
-  $email = 'g@g.com';                             //$_SESSION[$email];
-  $firstName = 'Guest';                            //$_SESSION[$firstName];
-  $lastName = 'Guest';                             //$_SESSION[$lastName];
-
-  // $userposts= "select $title from ads where $id = user_id";
-  
- 
-  return array(
-  'email'    => $email,
-  'firstName'   => $firstName,
-  'lastName' => $lastName,
-  'loggedIn' => True
-  );
-}
-extract(pageController());
+  extract(pageController());
 ?>
 
 <!doctype html>
-
 <html>
 <head>
 	<meta charset="utf-8">
@@ -54,36 +40,31 @@ extract(pageController());
       <ul class="list-group">
             <!-- <li class="list-group-item text-right"><span class="pull-left">Joined</span> 12.15.2015</li>
             <li class="list-group-item text-right"><span class="pull-left">Last Login</span> Yesterday</li> -->
-            <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $firstName?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $lastName?></li>
-            <li class="list-group-item text-right"><span class="pull-left">email address</span><?= $email?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Password</span>********</li>
+            <li class="list-group-item text-right"><span class="pull-left">First name</span><?= $userObject->first_name; ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $userObject->last_name; ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Email address</span><?= $userObject->email; ?></li>
             <li class="list-group-item text-right">
-              <a class="btn btn-med btn-primary" href="users.edit.php" type="submit">Edit Profile</a>
+              <a class="btn btn-med btn-primary" href="users.edit.php?id=<?= $userObject->id; ?>" type="submit">Edit Profile</a>
             </li>
       </ul> 
       <br>
       <h2>Your Ads</h2>
       <ul class = "list-group">
-            <li class="list-group-item text-right"><span class="pull-left">First Item</span> 
-              <input type="hidden" name="Ads1" value="ad1">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>
-            <li class="list-group-item text-right"><span class="pull-left">Second Item</span> 
-              <input type="hidden" name="Ads2" value="ad2">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>
-            <li class="list-group-item text-right"><span class="pull-left">ThirdItem</span> 
-              <input type="hidden" name="Ads3" value="ad3">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>     
-            <li class="list-group-item text-right">
-            <a class="btn btn-sm btn-primary" href="ads.create.php" type="submit">Create Ad</a>
-            </li>
+        <!-- If the user has active ads; then, execute the following -->
+        <?php if (!empty($userAds)) : ?>
+            <?php foreach ($userAds as $ad) : ?>
+                <li class="list-group-item text-right"><span class="pull-left"><?= $ad->title ?></span> 
+                  <input type="hidden" name="Ads1" value="ad1">
+                  <a class="btn btn-sm btn-primary" href="ads.edit.php?id=<?= $ad->id; ?>" type="submit">Edit Ad</a>
+                  <a class="btn btn-sm btn-success" href="ads.show.php?id=<?= $ad->id; ?>" type="submit">Show Ad</a>
+                </li>
+            <?php endforeach; ?>
+        <?php endif ?>
+        <li class="list-group-item text-right">
+          <a class="btn btn-sm btn-primary" href="ads.create.php" type="submit">Create Ad</a>
+        </li>
       </ul>
+
   </div> <!-- /container -->
   <script type="text/javascript"></script>    
    <?php include '../views/partials/footer.php'; ?>
