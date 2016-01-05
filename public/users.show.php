@@ -11,18 +11,10 @@
       $userObject = UserModel::find($userID);
       $userAds = $userObject->getAds();
     }
-
-    //the form containing only the submit edit button was submmited - user wants to edit thir profile
-    if ((!empty($_POST)) && (!empty($_GET['id'])))
-    {
-      header("Location: /users.edit.php?id=" . $userID);   //this will be the $_GET for the users.edit.php
-      die();
-    }
     
     return array (
       'userObject' => $userObject,
       'userAds' => $userAds,
-      'userID' => $userID
     );
   }
 
@@ -48,13 +40,11 @@
       <ul class="list-group">
             <!-- <li class="list-group-item text-right"><span class="pull-left">Joined</span> 12.15.2015</li>
             <li class="list-group-item text-right"><span class="pull-left">Last Login</span> Yesterday</li> -->
-            <li class="list-group-item text-right"><span class="pull-left">First name</span> <?= $userObject->first_name ?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $userObject->last_name ?></li>
-            <li class="list-group-item text-right"><span class="pull-left">Email address</span><?= $userObject->email ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">First name</span><?= $userObject->first_name; ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $userObject->last_name; ?></li>
+            <li class="list-group-item text-right"><span class="pull-left">Email address</span><?= $userObject->email; ?></li>
             <li class="list-group-item text-right">
-              <form method="POST">
-                <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary btn-med btn-center">Edit Profile</button>
-              </form>
+              <a class="btn btn-med btn-primary" href="users.edit.php?id=<?= $userObject->id; ?>" type="submit">Edit Profile</a>
             </li>
       </ul> 
       <br>
@@ -65,8 +55,8 @@
             <?php foreach ($userAds as $ad) : ?>
                 <li class="list-group-item text-right"><span class="pull-left"><?= $ad->title ?></span> 
                   <input type="hidden" name="Ads1" value="ad1">
-                  <a class="btn btn-sm btn-primary" href="ads.edit.php?id=<%$userID%>" type="submit">Edit Ad</a>
-                  <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
+                  <a class="btn btn-sm btn-primary" href="ads.edit.php?id=<?= $ad->id; ?>" type="submit">Edit Ad</a>
+                  <a class="btn btn-sm btn-success" href="ads.show.php?id=<?= $ad->id; ?>" type="submit">Show Ad</a>
                 </li>
             <?php endforeach; ?>
         <?php endif ?>
