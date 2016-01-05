@@ -3,3 +3,4 @@ database/adlister_db_config.php
 database/db_connect.php
 *config.*
 database/seeder_script.php
+.env.php
