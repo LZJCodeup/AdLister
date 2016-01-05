@@ -1,11 +1,8 @@
 <?php 
-  require_once '../database/adlister_db_config.php';
-  require_once '../database/db_connect.php';
-  require_once '../models/UserModel.php';
+  require_once '../bootstrap.php';
 
   function pageController(){
     //initializes the session variable if none exists otherwise it resets it
-    session_start();
 
     //a user id was passed to this page to display
     if (!empty($_GET['id']))
@@ -14,26 +11,22 @@
       $userObject = UserModel::find($userID);
       $userAds = $userObject->getAds();
     }
+
+    //the form containing only the submit edit button was submmited - user wants to edit thir profile
+    if ((!empty($_POST)) && (!empty($_GET['id'])))
+    {
+      header("Location: /users.edit.php?id=" . $userID);   //this will be the $_GET for the users.edit.php
+      die();
+    }
     
     return array (
       'userObject' => $userObject,
-      'userAds' => $userAds
+      'userAds' => $userAds,
+      'userID' => $userID
     );
   }
 
-function pageController()
-{
-  session_start();
-
-  if (!isset($_SESSION['IS_LOGGED_IN']) && (!$_SESSION['IS_LOGGED_IN'])) {
-    header("Location: index.php");
-    exit();
-  }
-  
-  // $id = $_SESSION['user_id'];
-
   extract(pageController());
-  var_dump($userAds);
 ?>
 
 <!doctype html>
@@ -59,32 +52,29 @@ function pageController()
             <li class="list-group-item text-right"><span class="pull-left">Last name</span><?= $userObject->last_name ?></li>
             <li class="list-group-item text-right"><span class="pull-left">Email address</span><?= $userObject->email ?></li>
             <li class="list-group-item text-right">
-              <a class="btn btn-med btn-primary" href="users.edit.php" type="submit">Edit Profile</a>
+              <form method="POST">
+                <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary btn-med btn-center">Edit Profile</button>
+              </form>
             </li>
       </ul> 
       <br>
-      <!-- if user has ads then show below -->
       <h2>Your Ads</h2>
       <ul class = "list-group">
-            <li class="list-group-item text-right"><span class="pull-left"><?= $firstItem ?></span> 
-              <input type="hidden" name="Ads1" value="ad1">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>
-            <li class="list-group-item text-right"><span class="pull-left">Second Item</span> 
-              <input type="hidden" name="Ads2" value="ad2">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>
-            <li class="list-group-item text-right"><span class="pull-left">ThirdItem</span> 
-              <input type="hidden" name="Ads3" value="ad3">
-              <a class="btn btn-sm btn-primary" href="ads.edit.php" type="submit">Edit Ad</a>
-              <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
-            </li>     
-            <li class="list-group-item text-right">
-            <a class="btn btn-sm btn-primary" href="ads.create.php" type="submit">Create Ad</a>
-            </li>
+        <!-- If the user has active ads; then, execute the following -->
+        <?php if (!empty($userAds)) : ?>
+            <?php foreach ($userAds as $ad) : ?>
+                <li class="list-group-item text-right"><span class="pull-left"><?= $ad->title ?></span> 
+                  <input type="hidden" name="Ads1" value="ad1">
+                  <a class="btn btn-sm btn-primary" href="ads.edit.php?id=<%$userID%>" type="submit">Edit Ad</a>
+                  <a class="btn btn-sm btn-success" href="ads.show.php" type="submit">Show Ad</a>
+                </li>
+            <?php endforeach; ?>
+        <?php endif ?>
+        <li class="list-group-item text-right">
+          <a class="btn btn-sm btn-primary" href="ads.create.php" type="submit">Create Ad</a>
+        </li>
       </ul>
+
   </div> <!-- /container -->
   <script type="text/javascript"></script>    
    <?php include '../views/partials/footer.php'; ?>

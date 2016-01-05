@@ -161,7 +161,7 @@ class Input
         return password_hash($key, PASSWORD_DEFAULT);
     }
 
-    public static function getImage()
+    public static function getImage($name)
     {   //are the named exceptions that I am throwing ok???
         $targetDirectory = "../public/uploads/";  //set the directory
         $targetFile = $targetDirectory . basename($_FILES['fileToUpload']['name']);  //file to save

@@ -1,9 +1,6 @@
 <?php 
-	require_once '../database/adlister_db_config.php';
-	require_once '../database/db_connect.php';
-	require_once '../utils/Input.php';
-	require_once '../models/AdModel.php';
-	require_once '../models/CategoryModel.php';
+	 require_once '../bootstrap.php';
+
 
 	function processForm ($postImage)
 	{	
@@ -67,7 +64,6 @@
 	}
 
 	function pageController() {
-		session_start();
 		$errors['count'] = 0;
 		
 		$arrayCategoriesArray = CategoryModel::all();
@@ -78,10 +74,10 @@
 
 		$imageSuccessMessage = "";
 		//if an image was submitted - validate it even before validating the rest of the form
-		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] != ''))
+		if (isset($_FILES['fileToUpload']) && ($_FILES['fileToUpload']['name'] != ''))
 		{
 			try {
-				$postImage = Input::getImage();
+				$postImage = Input::getImage('fileToUpload');
 				//image was successfully uploaded
 				$imageSuccessMessage = "Image: " . basename( $_FILES['fileToUpload']['name']) . " has been uploaded!";
 				//store image in the session
@@ -92,7 +88,7 @@
 			}
 		}
 		//clicked on the upload image button without selecting a photo
-		if (!empty($_POST['upload-image']) && ($_FILES['fileToUpload']['name'] == ''))
+		if (isset($_FILES['fileToUpload']) && ($_FILES['fileToUpload']['name'] == ''))
 		{
 			$errors['image'] = "Image:  Select an image to upload!";
 			$errors['count']++;
@@ -117,7 +113,7 @@
 			'categorySelectionList' => $categorySelectionList,
 			'errorMessages' => $errors,
 			'imageSuccessMessage' => $imageSuccessMessage
-			);
+		);
 	}
 	extract(pageController());
 	var_dump($_SESSION);
