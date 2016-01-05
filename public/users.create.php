@@ -60,6 +60,7 @@
         );
     }
     extract(pageController());
+    var_dump($errorMessages);
 ?>
 
 <!doctype html>

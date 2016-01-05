@@ -44,7 +44,7 @@
 				$adObject->date_posted = $adObject->date_posted;
 				$adObject->category = $adObject->category;
 				// hardcoded:  $adObject->user_id = $_SESSION['user_id'];
-				$adObject->users_id = 1;		//this is hardcoded for now
+				$adObject->users_id = $_SESSION['user_id'];		//this is hardcoded for now
 				$adObject->save();
 				unset($_SESSION['image']);
 				header("Location: /ads.show.php?id=" . $adObject->id); //this will be the $_GET for the ads.show.php
